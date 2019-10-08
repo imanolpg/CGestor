@@ -27,7 +27,8 @@ public class panelGeneral extends JPanel {
 		add(btnNewButton, BorderLayout.SOUTH);
 		
 		JTable table = new JTable(Main.getDatosTabla(), Main.getColumnasTabla());
-		JScrollPane scrollPane = new JScrollPane(table);
+		JScrollPane scrollPane = new JScrollPane(table,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setFillsViewportHeight(true);
 		add(scrollPane, BorderLayout.CENTER);
 

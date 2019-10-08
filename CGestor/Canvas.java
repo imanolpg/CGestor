@@ -12,7 +12,7 @@ public class Canvas extends JFrame{
 		this.setSize(1000, 600);
 		this.setLocation(100, 50);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		this.setResizable(false);
 	}
 	
 }
