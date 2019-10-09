@@ -8,7 +8,10 @@ import java.awt.event.ActionListener;
 
 
 public class panelGeneral extends JPanel {
-	private JTable table;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
@@ -21,12 +24,13 @@ public class panelGeneral extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Actualizar\" pulsado");
+				BD.actualizar();
 			}
 			
 		});
 		add(btnNewButton, BorderLayout.SOUTH);
 		
-		JTable table = new JTable(Main.getDatosTabla(), Main.getColumnasTabla());
+		JTable table = new JTable(BD.getDatosTabla(), BD.getColumnasTabla());
 		JScrollPane scrollPane = new JScrollPane(table,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setFillsViewportHeight(true);

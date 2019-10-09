@@ -25,7 +25,7 @@ public class panelEmail extends JPanel {
 		
 		Choice choice = new Choice();
 		choice.setBounds(553, 76, 130, 36);
-		String[] columnas = Main.getColumnasTabla();
+		String[] columnas = BD.getColumnasTabla();
 		for (String criterio : columnas) {
 			choice.add(criterio);
 		}
