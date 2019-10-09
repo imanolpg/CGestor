@@ -12,54 +12,23 @@ import java.beans.PropertyChangeListener;
 
 
 public class panelGeneral extends JPanel {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create the panel.
-	 */
+	private JTable table;
+	
 	public panelGeneral() {
-		setLayout(new BorderLayout(0, 0));
+		setLayout(null);
 		
-		JButton btnNewButton = new JButton("Actualizar");
-		btnNewButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Boton \"Actualizar\" pulsado");
-				BD.actualizar();
-			}
-			
-		});
-		add(btnNewButton, BorderLayout.SOUTH);
-		
-		class TML implements TableModelListener{
-			
-			private int columna;
-			private int fila;
-
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				
-				columna = e.getColumn();
-				fila = e.getLastRow();
-			}
-			
-			public int getFila() {
-				return fila;
-			}
-			
-			public int getColumna() {
-				return columna;
-			}
-			
-		}
-		
-		TML tml = new TML();
+		JScrollPane scrollPane = new JScrollPane(table,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(74, 6, 840, 462);
+		add(scrollPane);
 		
 		JTable table = new JTable(BD.getDatosTabla(), BD.getColumnasTabla());
-		table.getModel().addTableModelListener(tml);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setFillsViewportHeight(true);
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
@@ -71,18 +40,26 @@ public class panelGeneral extends JPanel {
 		           } catch (Exception e) {
 		        	   
 		           }
-		           System.out.println("Datod evt: " + tml.getFila());
-		           BD.aniadirLog("", "", evt.getNewValue().toString(), evt.getOldValue().toString());
+		           System.out.println("Datod evt: ");
+		           Main.logger.info("PruebaLOG");
 		           BD.aniadirActializacion("", "", evt.getNewValue().toString());
 		        }
 		    }
 		});
 		
-		JScrollPane scrollPane = new JScrollPane(table,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setFillsViewportHeight(true);
-		add(scrollPane, BorderLayout.CENTER);
-
+		scrollPane.setViewportView(table);
+		
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Boton \"Actualizar\" pulsado");
+				BD.actualizar();
+			}
+			
+		});
+		btnActualizar.setBounds(428, 480, 117, 29);
+		add(btnActualizar);
 	}
-
+	
 }

@@ -1,18 +1,30 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Main {
+	
+	//TODO log
+	//TODO email
+	
 	
 	static Canvas canvas;
 	static JPanel panelGeneral;
 	static JPanel panelEmail;
 	static ArrayList<String[]> actualizaciones;
+	
+	public static FileHandler fh;
+	public static Logger logger;
 
 	public static void main(String[] args) {
 		panelGeneral = new panelGeneral();
@@ -85,4 +97,17 @@ public class Main {
 		//TODO hacer esta funcion
 	}
 	
+	/**
+	 * Crea un log de todos los cambios
+	 */
+	public static void crearLog() {
+		try {
+			fh = new FileHandler("ArchivoLog.log");
+			logger.addHandler(fh);
+			SimpleFormatter formateador = new SimpleFormatter();
+			fh.setFormatter(formateador);
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
+		}
+	}	
 }

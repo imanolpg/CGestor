@@ -32,17 +32,6 @@ public class BD {
 		actualizaciones.add(new String[] {id, campo, valor});
 	}
 	
-	/**
-	 * Escribe un log de todos los cambios por seguridad
-	 * @param id localizador de la familia
-	 * @param campo a cambiar
-	 * @param valorNuevo valor introducido
-	 * @param valorViejo valor anterior
-	 */
-	public static void aniadirLog(String id, String campo, String valorNuevo, String valorViejo) {
-		//TODO hacer esta funcion
-	}
-	
 	/** 
 	 * Ordena los datos para mostrarlos en la tabla
 	 * @return Object[][] de los datos
