@@ -67,22 +67,24 @@ public class Main {
 		canvas.setVisible(true);
 	}
 	
+	/** Hace updates a la base de datos con los cambios de actualizaciones
+	 */
 	public static void updateDatabase() {
 		 String sql = "DELETE FROM warehouses WHERE id = ?";
 		 
-		for (String[] orden : actualizaciones) {
-		    try (Connection conn = this.connect();
-		    	PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-		    	// set the corresponding param
-		    	pstmt.setInt(1, id);
-		    	// execute the delete statement
-		    	pstmt.executeUpdate();
+		 for (String[] orden : actualizaciones) {
+		    try {
+				 Connection conexion = DriverManager.getConnection("jdbc:sqlite:test.db");
+				 Statement stmt = conexion.createStatement();
+				 
+		    	stmt.executeUpdate("");
+		    	//stmt.executeUpdate();
 		 
-		        } catch (SQLException e) {
+	        }catch (SQLException e) {
 		            System.out.println(e.getMessage());
-		        }
+	        }
 		}
+	}
 	
 	
 	/** Ordena los datos para mostrarlos en la tabla
@@ -113,6 +115,7 @@ public class Main {
 	        }
 			//stmt.executeUpdate(sql);
 			stmt.close();
+			conexion.close();
 		}catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
