@@ -14,9 +14,23 @@ public class BD {
 	public static final int TELEFONO = 4;
 	public static final int CORREO = 5;
 	public static final int PAGADO = 6;
+	
+	public static final int ID = 0;
+	public static final int CAMPO = 1;
+	public static final int VALOR = 2;
 
+	// {"id familia", "campo a cambiar", "nuevo valor"}
 	private static ArrayList<String[]> actualizaciones;
 	
+	/**
+	 * Aniade una nueva actualizacion para guardarlo en la base de datos
+	 * @param id localizador de la familia
+	 * @param campo que queremos cambiar
+	 * @param valor nuevo valor del campo
+	 */
+	public static void aniadirActializacion(String id, String campo, String valor) {
+		actualizaciones.add(new String[] {id, campo, valor});
+	}
 	/** 
 	 * Ordena los datos para mostrarlos en la tabla
 	 * @return Object[][] de los datos
@@ -74,18 +88,19 @@ public class BD {
 	 * Hace updates a la base de datos con los cambios de actualizaciones
 	 */
 	public static void actualizar() {
-		 
-		 for (String[] orden : actualizaciones) {
+		
 		    try {
-				 Connection conexion = DriverManager.getConnection("jdbc:sqlite:test.db");
-				 Statement stmt = conexion.createStatement();
-				 
-		    	stmt.executeUpdate("");
-		    	//stmt.executeUpdate();
-		 
+		    	Connection conexion = DriverManager.getConnection("jdbc:sqlite:test.db");
+		    	Statement stmt = conexion.createStatement();
+
+		    	for (String[] orden : actualizaciones) {
+		    		stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
+				}
+		    	
+		    	stmt.close();
+		    	conexion.close();
 	        }catch (SQLException e) {
 		            System.out.println(e.getMessage());
 	        }
-		}
 	}
 }
