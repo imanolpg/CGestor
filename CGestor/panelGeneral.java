@@ -38,7 +38,9 @@ public class panelGeneral extends JPanel {
 			@Override
 		    public void propertyChange(PropertyChangeEvent evt) {
 		        if ("tableCellEditor".equals(evt.getPropertyName())) {
-		           System.out.println("fdasfasdads");
+		           System.out.println("Editando un dato..");
+		           BD.aniadirLog(id, campo, evt.getNewValue(), evt.getOldValue());
+		           BD.aniadirActializacion(id, campo, evt.getNewValue());
 		        }
 		    }
 			

@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 public class Main {
 	
-	//TODO personalizar la tabla
-	
 	static Canvas canvas;
 	static JPanel panelGeneral;
 	static JPanel panelEmail;
@@ -20,9 +18,11 @@ public class Main {
 		panelGeneral = new panelGeneral();
 		panelEmail = new panelEmail();
 		createWindow();
-		
 	}
-
+	
+	/**
+	 * Crea el JPanel principal y lanza la app
+	 */
 	public static void createWindow() {
 		canvas = new Canvas("CGestor");
 
@@ -82,7 +82,7 @@ public class Main {
 	 * @param destinatario Destinatario al que se le va a enviar
 	 */
 	public static void enviarEmail(String email, String destinatario) {
-		
+		//TODO hacer esta funcion
 	}
 	
 }
