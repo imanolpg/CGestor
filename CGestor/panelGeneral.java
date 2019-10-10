@@ -35,14 +35,9 @@ public class panelGeneral extends JPanel {
 		    public void propertyChange(PropertyChangeEvent evt) {
 		        if ("tableCellEditor".equals(evt.getPropertyName())) {
 		           System.out.println("Editando un dato..");
-		           try {
-		        	   Thread.sleep(1000);
-		           } catch (Exception e) {
-		        	   
-		           }
 		           System.out.println("Datod evt: ");
-		           Main.logger.info("PruebaLOG");
-		           BD.aniadirActializacion("", "", evt.getNewValue().toString());
+		           //Main.logger.info("PruebaLOG");
+		           //BD.aniadirActializacion("", "", evt.getNewValue().toString());
 		        }
 		    }
 		});
