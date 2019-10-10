@@ -1,6 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.util.ArrayList;
@@ -126,5 +131,24 @@ public class Main {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	/**
+	 * Escribe un log de todos los cambios por seguridad
+	 * @param id localizador de la familia
+	 * @param campo a cambiar
+	 * @param valorNuevo valor introducido
+	 * @param valorViejo valor anterior
+	 */
+	public static void crearLog(String id, String campo, String valorNuevo, String valorViejo) {
+		try {
+			PrintStream fs = new PrintStream("Log.log");
+			DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");  
+			LocalDateTime now = LocalDateTime.now();  
+			fs.println("(" + formatoFecha.format(now) + ") CAMBIO id:" + id + ", campo:" + campo + ", valorViejo:" + valorViejo + ", valorNuevo:" + valorNuevo);
+			fs.close();
+			System.out.println("Log guardado correctamente");
+		} catch (FileNotFoundException e) {
+			System.err.println("ERROR al escribir al fichero: " + e.getMessage());
+		}
+	}
 }

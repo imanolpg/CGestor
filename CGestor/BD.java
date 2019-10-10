@@ -1,18 +1,15 @@
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 
 public class BD {
 	
-	public static final int FAMILIA = 0;
-	public static final int NOMBRE = 1;
+	public static final int NUMERO_FAMILIA = 0;
+	public static final int NOMBRE_FAMILIA = 1;
 	public static final int PARTICIPANTES = 2;
 	public static final int TALLAS = 3;
 	public static final int TELEFONO = 4;
@@ -34,26 +31,6 @@ public class BD {
 	 */
 	public static void aniadirActializacion(String id, String campo, String valor) {
 		actualizaciones.add(new String[] {id, campo, valor});
-	}
-	
-	/**
-	 * Escribe un log de todos los cambios por seguridad
-	 * @param id localizador de la familia
-	 * @param campo a cambiar
-	 * @param valorNuevo valor introducido
-	 * @param valorViejo valor anterior
-	 */
-	public static void crearLog(String id, String campo, String valorNuevo, String valorViejo) {
-		try {
-			PrintStream fs = new PrintStream("Log.log");
-			DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");  
-			LocalDateTime now = LocalDateTime.now();  
-			fs.println("(" + formatoFecha.format(now) + ") CAMBIO id:" + id + ", campo:" + campo + ", valorViejo:" + valorViejo + ", valorNuevo:" + valorNuevo);
-			fs.close();
-			System.out.println("Log guardado correctamente");
-		} catch (FileNotFoundException e) {
-			System.err.println("ERROR al escribir al fichero: " + e.getMessage());
-		}
 	}
 	
 	/** 
