@@ -1,46 +1,52 @@
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.JButton;
+
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-
 public class PanelGeneral extends JPanel {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTable table;
-	
+	private static JTable table;
+
 	public PanelGeneral() {
 		setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane(table,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(74, 6, 840, 462);
 		add(scrollPane);
-		
-		JTable table = new JTable(BD.getDatosTabla(), BD.getColumnasTabla());
+
+		table = new JTable(BD.getDatosTabla(), BD.getColumnasTabla());
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		ajustarTamanioColumnas();
 		table.setFillsViewportHeight(true);
+
 		table.addPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
-		    public void propertyChange(PropertyChangeEvent evt) {
-		        if ("tableCellEditor".equals(evt.getPropertyName())) {
-		           System.out.println("Editando un dato..");
-		           System.out.println("Datod evt: ");
-		           //Main.logger.info("PruebaLOG");
-		           //BD.aniadirActializacion("", "", evt.getNewValue().toString());
-		        }
-		    }
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ("tableCellEditor".equals(evt.getPropertyName())) {
+					System.out.println("Editando un dato..");
+					System.out.println("Datod evt: ");
+					// Main.logger.info("PruebaLOG");
+					// BD.aniadirActializacion("", "", evt.getNewValue().toString());
+				}
+			}
 		});
-		
+
 		scrollPane.setViewportView(table);
-		
+
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			@Override
@@ -48,10 +54,25 @@ public class PanelGeneral extends JPanel {
 				System.out.println("Boton \"Actualizar\" pulsado");
 				BD.actualizar();
 			}
-			
+
 		});
 		btnActualizar.setBounds(428, 480, 117, 29);
 		add(btnActualizar);
 	}
-	
+
+	/**
+	 * Actualiza el tamaño de las columnas de la tabla
+	 */
+	private static void ajustarTamanioColumnas() {
+		final TableColumnModel columnModel = table.getColumnModel();
+		for (int columna = 0; columna < table.getColumnCount(); columna++) {
+			int width = BD.getColumnasTabla()[columna].length() * 6; //tamaño minimo
+			for (int row = 0; row < table.getRowCount(); row++) {
+				TableCellRenderer renderer = table.getCellRenderer(row, columna);
+				Component comp = table.prepareRenderer(renderer, row, columna);
+				width = Math.max(comp.getPreferredSize().width + 1, width);
+			}
+			columnModel.getColumn(columna).setPreferredWidth(width + 10);
+		}
+	}
 }
