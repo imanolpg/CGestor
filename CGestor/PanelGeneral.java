@@ -1,17 +1,14 @@
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 
-public class panelGeneral extends JPanel {
+public class PanelGeneral extends JPanel {
 	
 	/**
 	 * 
@@ -19,7 +16,7 @@ public class panelGeneral extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	
-	public panelGeneral() {
+	public PanelGeneral() {
 		setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane(table,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

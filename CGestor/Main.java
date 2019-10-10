@@ -4,24 +4,28 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 public class Main {
-	
-	//TODO log
-	//TODO email
-	
-	
+
+	// TODO log
+	// TODO email
+
 	static Canvas canvas;
-	static JPanel panelGeneral;
-	static JPanel panelEmail;
+	static PanelGeneral panelGeneral;
+	static PanelEmail panelEmail;
+	static PanelConfiguracion panelConfiguracion;
 	static ArrayList<String[]> actualizaciones;
 
 	public static void main(String[] args) {
-		panelGeneral = new panelGeneral();
-		panelEmail = new panelEmail();
+		panelGeneral = new PanelGeneral();
+		panelEmail = new PanelEmail();
+		panelConfiguracion = new PanelConfiguracion();
 		createWindow();
 	}
-	
+
 	/**
 	 * Crea el JPanel principal y lanza la app
 	 */
@@ -36,8 +40,9 @@ public class Main {
 				System.out.println("Boton \"General\" pulsado");
 				canvas.add(panelGeneral, BorderLayout.CENTER);
 				panelEmail.setVisible(false);
+				panelConfiguracion.setVisible(false);
 				panelGeneral.setVisible(true);
-			}	
+			}
 		});
 		buttonemailPanel = new JButton("Email");
 		buttonemailPanel.addActionListener(new ActionListener() {
@@ -46,21 +51,25 @@ public class Main {
 				System.out.println("Boton \"Email\" pulsado");
 				canvas.add(panelEmail, BorderLayout.CENTER);
 				panelGeneral.setVisible(false);
+				panelConfiguracion.setVisible(false);
 				panelEmail.setVisible(true);
-			}	
+			}
 		});
 		buttonConfiguracion = new JButton("Configuracion");
 		buttonConfiguracion.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Boton \"Configuracion\" pulsado");	
-			}	
+				System.out.println("Boton \"Configuracion\" pulsado");
+				canvas.add(panelConfiguracion, BorderLayout.CENTER);
+				panelGeneral.setVisible(false);
+				panelEmail.setVisible(false);
+				panelConfiguracion.setVisible(true);
+			}
 		});
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(buttongeneralPanelPanel);
 		buttonPanel.add(buttonemailPanel);
 		buttonPanel.add(buttonConfiguracion);
-		
 
 		canvas.add(panelGeneral, BorderLayout.CENTER);
 
@@ -68,23 +77,54 @@ public class Main {
 
 		canvas.setVisible(true);
 	}
-	
+
 	/**
 	 * Selecciona los destinatarios que cumplen el criterio
+	 * 
 	 * @return String[] con los destinatarios
 	 */
-	public static String[] getDestinatarios(){
+	public static String[] getDestinatarios() {
 		String[] destinatarios = {};
-		return(destinatarios);
+		return (destinatarios);
 	}
-	
+
 	/**
 	 * Envia un email al destinatario
-	 * @param email Email a enviar
-	 * @param destinatario Destinatario al que se le va a enviar
+	 * 
+	 * @param asunto       del correo
+	 * @param email        a enviar
+	 * @param destinatario al que se le va a enviar
 	 */
-	public static void enviarEmail(String email, String destinatario) {
-		//TODO hacer esta funcion
+	public static void enviarEmail(String asunto, String email, String destinatario) {
+		destinatario = "imanolgutierrez@yahoo.es";
+		// Get properties object
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.port", "465");
+
+		// get Session
+		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				//asfdasfasfadfsaasd@gmail.es
+				return new PasswordAuthentication(panelConfiguracion.getEmail(), panelConfiguracion.getContrasenia());
+			}
+		});
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+			message.setSubject(asunto);
+			message.setText(email);
+
+			// send message
+			Transport.send(message);
+			System.out.println("Mensaje enviado a: " + destinatario);
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

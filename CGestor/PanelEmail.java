@@ -1,4 +1,5 @@
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import java.awt.Choice;
@@ -8,14 +9,21 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
+import javax.swing.JTextField;
 
 
-public class panelEmail extends JPanel {
+public class PanelEmail extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField asuntoEmail;
 
 	/**
 	 * Create the panel.
 	 */
-	public panelEmail() {
+	public PanelEmail() {
 		setLayout(null);
 		
 		JLabel label = new JLabel("Criterio:");
@@ -41,13 +49,17 @@ public class panelEmail extends JPanel {
 		choice_1.add("mayor o igual que");
 		add(choice_1);
 		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBounds(863, 76, 108, 36);
-		add(formattedTextField);
+		JFormattedTextField comparador = new JFormattedTextField();
+		comparador.setBounds(863, 76, 108, 36);
+		add(comparador);
 		
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setBounds(84, 25, 399, 433);
-		add(editorPane);
+		JEditorPane cuerpoEmail = new JEditorPane();
+		//editorPane.setBounds(84, 122, 399, 336);
+		//add(editorPane);
+		
+		JScrollPane scrollPane = new JScrollPane(cuerpoEmail,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(84, 122, 399, 336);
+		add(scrollPane);
 		
 		JLabel label_1 = new JLabel("Destinatarios a los que se va a enviar el correro:");
 		label_1.setBounds(534, 183, 437, 38);
@@ -64,9 +76,9 @@ public class panelEmail extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Enviar\" pulsado");
-				String email = ""; 
+				//Main.enviarEmail(asuntoEmail.getText() , cuerpoEmail.getText(), "imanolgutierrez@yahoo.es");
 				for (String destinatario : list.getItems()) {
-					Main.enviarEmail(email, destinatario);
+					Main.enviarEmail(asuntoEmail.getText() , "adf", destinatario);
 				}
 			}
 			
@@ -88,5 +100,22 @@ public class panelEmail extends JPanel {
 			
 		});
 		add(btnSeleccionar);
+		
+		asuntoEmail = new JTextField();
+		asuntoEmail.setBounds(84, 40, 399, 43);
+		add(asuntoEmail);
+		asuntoEmail.setColumns(10);
+		
+		JLabel lblAsuntoDelCorreo = new JLabel("Asunto del correo:");
+		lblAsuntoDelCorreo.setBounds(84, 6, 165, 33);
+		lblAsuntoDelCorreo.setFont(new Font(lblAsuntoDelCorreo.getFont().getName(), Font.PLAIN, 15));
+		add(lblAsuntoDelCorreo);
+		
+		JLabel lblNewLabel = new JLabel("Cuerpo del correo:");
+		lblNewLabel.setBounds(84, 85, 199, 36);
+		lblNewLabel.setFont(new Font(lblNewLabel.getFont().getName(), Font.PLAIN, 15));
+		add(lblNewLabel);
 	}
+	
+	
 }
