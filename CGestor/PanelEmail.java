@@ -72,16 +72,15 @@ public class PanelEmail extends JPanel {
 		
 		JButton button = new JButton("Enviar");
 		button.setBounds(752, 442, 82, 29);
-		String correo = "Hola familia <<nombreFamilia>>.";
-		System.out.println("Correo: " + correo);
-		System.out.println("Correo nuevo: " + reestructuraEmail(correo, (String[]) BD.getDatosTabla()[0]));
+		//System.out.println("Correo: " + correo);
+		//System.out.println("Correo nuevo: " + reestructuraEmail(correo, (String[]) BD.getDatosTabla()[0]));
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Enviar\" pulsado");
-				Main.enviarEmail(asuntoEmail.getText() , cuerpoEmail.getText(), "imanolgutierrez@yahoo.es");
 				for (String destinatario : list.getItems()) {
-					Main.enviarEmail(asuntoEmail.getText() , "adf", destinatario);
+					Main.enviarEmail(reestructuraEmail(asuntoEmail.getText(), BD.getUsuarioEnBaseAEmail(destinatario)) , reestructuraEmail(asuntoEmail.getText(), BD.getUsuarioEnBaseAEmail(destinatario)), destinatario);
+					System.out.println("Email enviado a: " + destinatario);
 				}
 			}
 			
@@ -127,13 +126,13 @@ public class PanelEmail extends JPanel {
 	 * @return el correo personalizado
 	 */
 	private static String reestructuraEmail(String correo, String[] datos) {
-		correo = correo.replace("<<numeroFamilia>>", datos[BD.NUMERO_FAMILIA]);
-		correo = correo.replace("<<nombreFamilia>>", datos[BD.NOMBRE_FAMILIA]);
-		correo = correo.replace("<<participantes>>", datos[BD.PARTICIPANTES]);
-		correo = correo.replace("<<tallas>>", datos[BD.TALLAS]);
-		correo = correo.replace("<<telefono>>", datos[BD.TELEFONO]);
-		correo = correo.replace("<<correo>>", datos[BD.CORREO]);
-		correo = correo.replace("<<pagado>>", datos[BD.PAGADO]);
+		correo = correo.replace("<<numeroFamilia>>", datos[BD.NUMERO_FAMILIA])
+			.replace("<<nombreFamilia>>", datos[BD.NOMBRE_FAMILIA])
+			.replace("<<participantes>>", datos[BD.PARTICIPANTES])
+			.replace("<<tallas>>", datos[BD.TALLAS])
+			.replace("<<telefono>>", datos[BD.TELEFONO])
+			.replace("<<correo>>", datos[BD.CORREO])
+			.replace("<<pagado>>", datos[BD.PAGADO]);
 		return(correo);
 	}
 	
