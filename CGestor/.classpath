@@ -5,6 +5,5 @@
 	<classpathentry kind="lib" path="/Users/imanol/Desktop/CGestor/CGestor/sqlite-jdbc-3.27.2.1.jar"/>
 	<classpathentry kind="lib" path="/Users/imanol/Desktop/CGestor/CGestor/activation.jar"/>
 	<classpathentry kind="lib" path="/Users/imanol/Desktop/CGestor/CGestor/mail.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

@@ -105,4 +105,28 @@ public class BD {
 		            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
 	        }
 	}
+	
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public static String[] getUsuarioEnBaseAEmail(String email){
+		Connection conexion;
+		Statement stmt;
+		ResultSet resultado;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			conexion = DriverManager.getConnection("jdbc:sqlite:familias.db");
+			stmt = conexion.createStatement();
+			resultado = stmt.executeQuery("SELECT * FROM datosFamilias WHERE email='" + email + "'");
+	        System.out.println("Resultado: " + resultado);
+			//stmt.executeUpdate(sql);
+			stmt.close();
+			conexion.close();
+		}catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		return(new String[]{"1","2"});
+	}
 }

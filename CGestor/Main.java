@@ -28,6 +28,7 @@ public class Main {
 		panelGeneral = new PanelGeneral();
 		panelEmail = new PanelEmail();
 		panelConfiguracion = new PanelConfiguracion();
+		panelConfiguracion.cargarCredenciales();
 		createWindow();
 	}
 
@@ -101,7 +102,7 @@ public class Main {
 	 * @param destinatario al que se le va a enviar
 	 */
 	public static void enviarEmail(String asunto, String email, String destinatario) {
-		destinatario = "imanolgutierrez@yahoo.es";
+
 		// Get properties object
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
