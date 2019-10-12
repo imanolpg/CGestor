@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -87,11 +88,20 @@ public class Main {
 	/**
 	 * Selecciona los destinatarios que cumplen el criterio
 	 * 
-	 * @return String[] con los destinatarios
+	 * @return String[] de los correos de los destinatarios
 	 */
-	public static String[] getDestinatarios() {
-		String[] destinatarios = {};
-		return (destinatarios);
+	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado) {
+		ArrayList<String> listaDestinatarios = new ArrayList<String>();
+		for (Object[] familia : BD.getDatosTabla()){
+			if (familia[datoAEstudiar].toString().equals(resultadoBuscado))
+				listaDestinatarios.add(familia[BD.CORREO].toString());
+		}
+		String[] aDevolver = new String[listaDestinatarios.size()];
+		for (int x=0; x<listaDestinatarios.size(); x++) {
+			aDevolver[x] = listaDestinatarios.get(x);
+			System.out.println(listaDestinatarios.get(x));
+		}
+		return (aDevolver);
 	}
 
 	/**
