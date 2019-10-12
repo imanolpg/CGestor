@@ -37,7 +37,7 @@ public class PanelGeneral extends JPanel {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if ("tableCellEditor".equals(evt.getPropertyName())) {
 					ajustarTamanioColumnas();
-					System.out.println("Ajustando tamaño");
+					BD.actualizar();
 				}
 			}
 		});
