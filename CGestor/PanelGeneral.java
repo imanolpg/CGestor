@@ -31,16 +31,13 @@ public class PanelGeneral extends JPanel {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		ajustarTamanioColumnas();
 		table.setFillsViewportHeight(true);
-
 		table.addPropertyChangeListener(new PropertyChangeListener() {
-
+			
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if ("tableCellEditor".equals(evt.getPropertyName())) {
-					System.out.println("Editando un dato..");
-					System.out.println("Datod evt: ");
-					// Main.logger.info("PruebaLOG");
-					// BD.aniadirActializacion("", "", evt.getNewValue().toString());
+					ajustarTamanioColumnas();
+					System.out.println("Ajustando tamaño");
 				}
 			}
 		});
@@ -74,5 +71,15 @@ public class PanelGeneral extends JPanel {
 			}
 			columnModel.getColumn(columna).setPreferredWidth(width + 10);
 		}
+	}
+	
+	public static String[][] getDatosTabla(){
+		String[][] aDevolver = new String[table.getRowCount()][table.getColumnCount()];
+		for (int fila = 0; fila<table.getRowCount(); fila = fila + 1) {
+			for (int columna = 0; columna<table.getColumnCount(); columna = columna + 1) {
+				aDevolver[fila][columna] = (String) table.getValueAt(fila, columna);
+			}
+		}
+		return (aDevolver);
 	}
 }

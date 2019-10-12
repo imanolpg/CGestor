@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -92,14 +93,24 @@ public class BD {
 	public static void actualizar() {
 		
 		    try {
-		    	Connection conexion = DriverManager.getConnection("jdbc:sqlite:test.db");
+		    	Connection conexion = DriverManager.getConnection("jdbc:sqlite:familias.db");
 		    	Statement stmt = conexion.createStatement();
-
-		    	for (String[] orden : actualizaciones) {
-		    		stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
+		    	stmt.executeUpdate("DELETE FROM datosFamilias");
+		    	stmt.close();
+		    	PreparedStatement pstmt = conexion.prepareStatement("INSERT INTO datosFamilias (id, nombre, participantes, tallas, telefono, email, pagado) VALUES (?,?,?,?,?,?,?);");
+		    	for (String[] familia : PanelGeneral.getDatosTabla()) {
+		    		pstmt.setString(1, familia[BD.ID]);
+		    		pstmt.setString(2, familia[BD.NOMBRE_FAMILIA]);
+		    		pstmt.setString(3, familia[BD.PARTICIPANTES]);
+		    		pstmt.setString(4, familia[BD.TALLAS]);
+		    		pstmt.setString(5, familia[BD.TELEFONO]);
+		    		pstmt.setString(6, familia[BD.CORREO]);
+		    		pstmt.setString(7, familia[BD.PAGADO]);
+		    		pstmt.executeUpdate();
+		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
 		    	
-		    	stmt.close();
+		    	pstmt.close();
 		    	conexion.close();
 	        }catch (SQLException e) {
 		            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
