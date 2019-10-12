@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -90,10 +89,11 @@ public class Main {
 	 * 
 	 * @return String[] de los correos de los destinatarios
 	 */
-	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado) {
+	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado, String accion) {
 		ArrayList<String> listaDestinatarios = new ArrayList<String>();
 		for (Object[] familia : BD.getDatosTabla()){
-			if (familia[datoAEstudiar].toString().equals(resultadoBuscado)) {
+			if (familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("igual") ||
+				!familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("diferente")) {
 				listaDestinatarios.add(familia[BD.CORREO].toString());
 				PanelEmail.aniadirFamiliaDestinataria((String[] )familia);
 			}
@@ -126,7 +126,6 @@ public class Main {
 		// get Session
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				//asfdasfasfadfsaasd@gmail .es
 				return new PasswordAuthentication(panelConfiguracion.getEmail(), panelConfiguracion.getContrasenia());
 			}
 		});
@@ -139,9 +138,9 @@ public class Main {
 
 			// send message
 			Transport.send(message);
-			System.out.println("Mensaje enviado a: " + destinatario);
+			System.out.println("Email enviado a: " + destinatario);
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			System.err.println("Error al enviar el email: " + e.getMessage());
 		}
 	}
 	

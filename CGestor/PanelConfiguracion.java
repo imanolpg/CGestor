@@ -12,8 +12,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.JButton;
 
 public class PanelConfiguracion extends JPanel {
@@ -38,7 +36,7 @@ public class PanelConfiguracion extends JPanel {
 		lblConfiguracin.setFont(new Font(lblConfiguracin.getFont().getName(), Font.PLAIN, 21));
 		add(lblConfiguracin);
 
-		JLabel lblDireccinDeCorreo = new JLabel("Dirección de correo electrónico ");
+		JLabel lblDireccinDeCorreo = new JLabel("Dirección de correo electrónico");
 		lblDireccinDeCorreo.setBounds(124, 152, 249, 24);
 		lblDireccinDeCorreo.setFont(new Font(lblDireccinDeCorreo.getFont().getName(), Font.PLAIN, 15));
 		add(lblDireccinDeCorreo);
@@ -58,7 +56,7 @@ public class PanelConfiguracion extends JPanel {
 		clave.setBounds(418, 249, 256, 33);
 		add(clave);
 		clave.setColumns(10);
-		
+
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.setBounds(438, 376, 117, 33);
 		btnGuardar.addActionListener(new ActionListener() {
@@ -69,11 +67,11 @@ public class PanelConfiguracion extends JPanel {
 				guardarCredenciales(email.getText(), clave.getText());
 				System.out.println("Credenciales guardadas");
 			}
-			
+
 		});
 		add(btnGuardar);
 	}
-	
+
 	/**
 	 * Función que se llama al empezar el programa para actualizar las credenciales
 	 */
@@ -111,20 +109,20 @@ public class PanelConfiguracion extends JPanel {
 	public String[] recuperarCredenciales() {
 		String[] credenciales = new String[2];
 		String lineaActual;
-	      
-	      try {
-	         // open input stream test.txt for reading purpose.
-	         BufferedReader br = new BufferedReader(new FileReader("credenciales.txt"));
-	         int x = 0;
-	         while ((lineaActual = br.readLine()) != null) {
-	            credenciales[x] = lineaActual;
-	            x = x + 1;
-	         }
-	         br.close();
-	      } catch(Exception e) {
-	         System.err.println("Error al leer el archivo: " + e.getMessage());
-	         return null;
-	      }
+
+		try {
+			// open input stream test.txt for reading purpose.
+			BufferedReader br = new BufferedReader(new FileReader("credenciales.txt"));
+			int x = 0;
+			while ((lineaActual = br.readLine()) != null) {
+				credenciales[x] = lineaActual;
+				x = x + 1;
+			}
+			br.close();
+		} catch (Exception e) {
+			System.err.println("Error al leer el archivo: " + e.getMessage());
+			return null;
+		}
 		return credenciales;
 
 	}
@@ -166,7 +164,7 @@ public class PanelConfiguracion extends JPanel {
 		} catch (Exception e) {
 			System.err.println("Error al desencriptar: " + e.getMessage());
 		}
-		// System.out.println("Desencriptado: " + textoPlano);
+		System.out.println("Desencriptado: " + textoPlano);
 		return textoPlano;
 	}
 
@@ -188,7 +186,7 @@ public class PanelConfiguracion extends JPanel {
 		} catch (Exception e) {
 			System.err.println("Error al encriptar: " + e.getMessage());
 		}
-		// System.out.println("Encriptado: " + textoEncriptado);
+		System.out.println("Encriptado: " + textoEncriptado);
 		return textoEncriptado;
 	}
 }
