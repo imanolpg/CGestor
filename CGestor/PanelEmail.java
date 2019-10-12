@@ -45,10 +45,6 @@ public class PanelEmail extends JPanel {
 		choice_1.setBounds(724, 76, 102, 36);
 		choice_1.add("igual");
 		choice_1.add("diferente");
-		choice_1.add("menor que");
-		choice_1.add("mayor que");
-		choice_1.add("menor o igual que");
-		choice_1.add("mayor o igual que");
 		add(choice_1);
 		
 		JFormattedTextField comparador = new JFormattedTextField();
@@ -74,8 +70,6 @@ public class PanelEmail extends JPanel {
 		
 		JButton button = new JButton("Enviar");
 		button.setBounds(752, 442, 82, 29);
-		//System.out.println("Correo: " + correo);
-		//System.out.println("Correo nuevo: " + reestructuraEmail(correo, (String[]) BD.getDatosTabla()[0]));
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -84,7 +78,6 @@ public class PanelEmail extends JPanel {
 					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
 					Main.enviarEmail(asunto, correo, destinatario[BD.CORREO]);
-					System.out.println("Email enviado a: " + destinatario[BD.CORREO]);
 				}
 			}
 			
@@ -99,7 +92,7 @@ public class PanelEmail extends JPanel {
 				System.out.println("Boton \"Seleccionar\" pulsado");
 				list.removeAll();
 				eliminarFamiliasDestinatarias();
-				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText());
+				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText(), choice_1.getSelectedItem());
 				for (String destinatario : listaDestinatarios){
 					list.add(destinatario);
 				}
