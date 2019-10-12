@@ -94,7 +94,7 @@ public class PanelEmail extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Seleccionar\" pulsado");
 				list.removeAll();
-				String[] listaDestinatarios = Main.getDestinatarios();
+				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText());
 				for (String destinatario : listaDestinatarios){
 					list.add(destinatario);
 				}
