@@ -127,7 +127,7 @@ public class PanelEmail extends JPanel {
 		choiceAniadir.add("Pagado");
 		add(choiceAniadir);
 		
-		JButton btnAniadir = new JButton("Añadir");
+		JButton btnAniadir = new JButton("Insertar");
 		btnAniadir.setBounds(335, 474, 108, 27);
 		btnAniadir.addActionListener(new ActionListener() {
 
