@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.Font;
 import javax.swing.JTextField;
 
@@ -18,7 +19,8 @@ public class PanelEmail extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField asuntoEmail;
+	private static JTextField asuntoEmail;
+	private static ArrayList<String[]> familiasDestinatarias = new ArrayList<String[]>();
 
 	/**
 	 * Create the panel.
@@ -78,9 +80,11 @@ public class PanelEmail extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Enviar\" pulsado");
-				for (String destinatario : list.getItems()) {
-					Main.enviarEmail(reestructuraEmail(asuntoEmail.getText(), BD.getUsuarioEnBaseAEmail(destinatario)) , reestructuraEmail(asuntoEmail.getText(), BD.getUsuarioEnBaseAEmail(destinatario)), destinatario);
-					System.out.println("Email enviado a: " + destinatario);
+				for (String[] destinatario : familiasDestinatarias) {
+					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
+					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
+					Main.enviarEmail(asunto, correo, destinatario[BD.CORREO]);
+					System.out.println("Email enviado a: " + destinatario[BD.CORREO]);
 				}
 			}
 			
@@ -94,6 +98,7 @@ public class PanelEmail extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Seleccionar\" pulsado");
 				list.removeAll();
+				eliminarFamiliasDestinatarias();
 				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText());
 				for (String destinatario : listaDestinatarios){
 					list.add(destinatario);
@@ -117,6 +122,41 @@ public class PanelEmail extends JPanel {
 		lblNewLabel.setBounds(84, 85, 199, 36);
 		lblNewLabel.setFont(new Font(lblNewLabel.getFont().getName(), Font.PLAIN, 15));
 		add(lblNewLabel);
+		
+		Choice choiceAniadir = new Choice();
+		choiceAniadir.setBounds(84, 474, 199, 27);
+		choiceAniadir.add("Numero Familia");
+		choiceAniadir.add("Nombre Familia");
+		choiceAniadir.add("Participantes");
+		choiceAniadir.add("Tallas");
+		choiceAniadir.add("Telefono");
+		choiceAniadir.add("Correo");
+		choiceAniadir.add("Pagado");
+		add(choiceAniadir);
+		
+		JButton btnAniadir = new JButton("Añadir");
+		btnAniadir.setBounds(335, 474, 108, 27);
+		btnAniadir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String aAniadir = "";
+				System.out.println(choiceAniadir.getSelectedItem());
+				switch (choiceAniadir.getSelectedItem()) {
+				case "Numero Familia": aAniadir = "<<numeroFamilia>>"; break;
+				case "Nombre Familia": aAniadir = "<<nombreFamilia>>"; break;
+				case "Participantes": aAniadir = "<<participantes>>"; break;
+				case "Tallas": aAniadir = "<<tallas>>"; break;
+				case "Telefono": aAniadir = "<<telefono>>"; break;
+				case "Correo": aAniadir = "<<correo>>"; break;
+				case "Pagado": aAniadir = "<<pagado>>"; break;
+				default: aAniadir = ""; break;
+				}
+				cuerpoEmail.setText(cuerpoEmail.getText() + aAniadir);	
+			}
+			
+		});
+		add(btnAniadir);
 	}
 	
 	/**
@@ -136,5 +176,18 @@ public class PanelEmail extends JPanel {
 		return(correo);
 	}
 	
+	/**
+	 * Añade una nueva familia para enviar el email
+	 * @param nueva familia
+	 */
+	public static void aniadirFamiliaDestinataria(String[] familia) {
+		familiasDestinatarias.add(familia);
+	}
 	
+	/**
+	 * Elimina todos los datos de la lista de familias destinatarios
+	 */
+	public static void eliminarFamiliasDestinatarias() {
+		familiasDestinatarias = new ArrayList<String[]>();
+	}
 }
