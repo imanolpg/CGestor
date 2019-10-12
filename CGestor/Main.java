@@ -93,8 +93,10 @@ public class Main {
 	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado) {
 		ArrayList<String> listaDestinatarios = new ArrayList<String>();
 		for (Object[] familia : BD.getDatosTabla()){
-			if (familia[datoAEstudiar].toString().equals(resultadoBuscado))
+			if (familia[datoAEstudiar].toString().equals(resultadoBuscado)) {
 				listaDestinatarios.add(familia[BD.CORREO].toString());
+				PanelEmail.aniadirFamiliaDestinataria((String[] )familia);
+			}
 		}
 		String[] aDevolver = new String[listaDestinatarios.size()];
 		for (int x=0; x<listaDestinatarios.size(); x++) {
@@ -124,7 +126,7 @@ public class Main {
 		// get Session
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				//asfdasfasfadfsaasd@gmail.es
+				//asfdasfasfadfsaasd@gmail .es
 				return new PasswordAuthentication(panelConfiguracion.getEmail(), panelConfiguracion.getContrasenia());
 			}
 		});
