@@ -73,12 +73,15 @@ public class PanelEmail extends JPanel {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				button.setText("Enviando mensaje...");
 				System.out.println("Boton \"Enviar\" pulsado");
+				System.out.println(familiasDestinatarias.size());
 				for (String[] destinatario : familiasDestinatarias) {
 					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
 					Main.enviarEmail(asunto, correo, destinatario[BD.CORREO]);
 				}
+				button.setText("Enviar");
 			}
 			
 		});
