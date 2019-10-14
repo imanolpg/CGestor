@@ -13,7 +13,7 @@ Programa en Java para gestionar usuarios.
 
 ## Requisitos
 
-- JAVA >= 7.0
+- Java >= 7.0
 
 ## Dependencias
 
