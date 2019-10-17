@@ -1,6 +1,7 @@
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.JButton;
@@ -24,10 +25,15 @@ public class PanelGeneral extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setBounds(74, 6, 840, 462);
+		scrollPane.setBounds(74, 6, 747, 462);
 		add(scrollPane);
-
-		table = new JTable(BD.getDatosTabla(), BD.getColumnasTabla());
+		
+		DefaultTableModel modelo = new DefaultTableModel();
+		for (String columna : BD.getColumnasTabla())
+			modelo.addColumn(columna);
+		for (Object[] familia : BD.getDatosTabla())
+			modelo.addRow(familia);
+		table = new JTable(modelo);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		ajustarTamanioColumnas();
 		table.setFillsViewportHeight(true);
@@ -55,6 +61,32 @@ public class PanelGeneral extends JPanel {
 		});
 		btnActualizar.setBounds(428, 480, 117, 29);
 		add(btnActualizar);
+		
+		JButton btnAniadir = new JButton("Añadir");
+		btnAniadir.setBounds(853, 145, 117, 29);
+		btnAniadir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modelo.addRow(new Object[]{"", "", "", "", "", "", ""});
+				System.out.println("Añadido un nuevo registro");
+			}
+			
+		});
+		add(btnAniadir);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(853, 199, 117, 29);
+		btnEliminar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modelo.removeRow(table.getSelectedRow());
+				System.out.println("Eliminado el registro seleccionado");
+			}
+			
+		});
+		add(btnEliminar);
 	}
 
 	/**
