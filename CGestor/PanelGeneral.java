@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+
+import javax.swing.JTextField;
 
 public class PanelGeneral extends JPanel {
 
@@ -19,6 +22,8 @@ public class PanelGeneral extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static JTable table;
+	private JTextField textoABuscar;
+	private DefaultTableModel modelo;
 
 	public PanelGeneral() {
 		setLayout(null);
@@ -28,7 +33,7 @@ public class PanelGeneral extends JPanel {
 		scrollPane.setBounds(74, 6, 747, 462);
 		add(scrollPane);
 		
-		DefaultTableModel modelo = new DefaultTableModel();
+		modelo = new DefaultTableModel();
 		for (String columna : BD.getColumnasTabla())
 			modelo.addColumn(columna);
 		for (Object[] familia : BD.getDatosTabla())
@@ -63,7 +68,7 @@ public class PanelGeneral extends JPanel {
 		add(btnActualizar);
 		
 		JButton btnAniadir = new JButton("Añadir");
-		btnAniadir.setBounds(853, 145, 117, 29);
+		btnAniadir.setBounds(853, 357, 117, 29);
 		btnAniadir.addActionListener(new ActionListener() {
 
 			@Override
@@ -76,7 +81,7 @@ public class PanelGeneral extends JPanel {
 		add(btnAniadir);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(853, 199, 117, 29);
+		btnEliminar.setBounds(853, 389, 117, 29);
 		btnEliminar.addActionListener(new ActionListener() {
 
 			@Override
@@ -87,6 +92,43 @@ public class PanelGeneral extends JPanel {
 			
 		});
 		add(btnEliminar);
+		
+		textoABuscar = new JTextField();
+		textoABuscar.setBounds(843, 64, 139, 26);
+		add(textoABuscar);
+		textoABuscar.setColumns(10);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setBounds(843, 97, 139, 29);
+		btnBuscar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {	
+				Thread busqueda = new Thread() { 
+					public void run() {
+						for (int fila = 0; fila<table.getRowCount(); fila = fila + 1) {
+							for (int columna = 0; columna<table.getColumnCount(); columna = columna + 1) {
+								if(table.getValueAt(fila, columna).equals(textoABuscar.getText())) {
+									btnBuscar.setText("Siguiente");
+									table.setRowSelectionInterval(fila, fila);
+									System.out.println("ENCONTRADO");
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+						btnBuscar.setText("Buscar");
+					}
+				};
+				busqueda.run();
+			}
+			
+		});
+		add(btnBuscar);
 	}
 
 	/**
