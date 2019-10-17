@@ -30,7 +30,7 @@ public class BD {
 	 * @param campo que queremos cambiar
 	 * @param valor nuevo valor del campo
 	 */
-	public static void aniadirActializacion(String id, String campo, String valor) {
+	public static void aniadirActualizacion(String id, String campo, String valor) {
 		actualizaciones.add(new String[] {id, campo, valor});
 	}
 	
@@ -61,7 +61,6 @@ public class BD {
 	        	};
 	        	participantes.add(familia);
 	        }
-			//stmt.executeUpdate(sql);
 			stmt.close();
 			conexion.close();
 		}catch (Exception e) {
