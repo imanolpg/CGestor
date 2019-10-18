@@ -45,6 +45,7 @@ public class PanelEmail extends JPanel {
 		choice_1.setBounds(724, 76, 102, 36);
 		choice_1.add("igual");
 		choice_1.add("diferente");
+		choice_1.add("todos");
 		add(choice_1);
 
 		JFormattedTextField comparador = new JFormattedTextField();

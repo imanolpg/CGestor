@@ -95,7 +95,10 @@ public class Main {
 	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado, String accion) {
 		ArrayList<String> listaDestinatarios = new ArrayList<String>();
 		for (Object[] familia : BD.getDatosTabla()){
-			if (familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("igual") ||
+			if (accion.equals("todos")) {
+				listaDestinatarios.add(familia[BD.CORREO].toString());
+			}
+			else if (familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("igual") ||
 				!familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("diferente")) {
 				listaDestinatarios.add(familia[BD.CORREO].toString());
 				PanelEmail.aniadirFamiliaDestinataria((String[] )familia);
