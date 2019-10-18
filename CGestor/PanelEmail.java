@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.Font;
 import javax.swing.JTextField;
-
+import javax.swing.text.BadLocationException;
 
 public class PanelEmail extends JPanel {
 
@@ -27,12 +27,12 @@ public class PanelEmail extends JPanel {
 	 */
 	public PanelEmail() {
 		setLayout(null);
-		
+
 		JLabel label = new JLabel("Criterio:");
 		label.setBounds(724, 25, 82, 27);
 		label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 20));
 		add(label);
-		
+
 		Choice choice = new Choice();
 		choice.setBounds(553, 76, 130, 36);
 		String[] columnas = BD.getColumnasTabla();
@@ -40,34 +40,35 @@ public class PanelEmail extends JPanel {
 			choice.add(criterio);
 		}
 		add(choice);
-		
+
 		Choice choice_1 = new Choice();
 		choice_1.setBounds(724, 76, 102, 36);
 		choice_1.add("igual");
 		choice_1.add("diferente");
 		add(choice_1);
-		
+
 		JFormattedTextField comparador = new JFormattedTextField();
 		comparador.setBounds(863, 76, 108, 36);
 		add(comparador);
-		
+
 		JEditorPane cuerpoEmail = new JEditorPane();
-		//editorPane.setBounds(84, 122, 399, 336);
-		//add(editorPane);
-		
-		JScrollPane scrollPane = new JScrollPane(cuerpoEmail,  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		// editorPane.setBounds(84, 122, 399, 336);
+		// add(editorPane);
+
+		JScrollPane scrollPane = new JScrollPane(cuerpoEmail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(84, 122, 399, 336);
 		add(scrollPane);
-		
+
 		JLabel label_1 = new JLabel("Destinatarios a los que se va a enviar el correro:");
 		label_1.setBounds(534, 183, 437, 38);
 		label_1.setFont(new Font(label_1.getFont().getName(), Font.PLAIN, 18));
 		add(label_1);
-		
+
 		List list = new List();
 		list.setBounds(553, 227, 416, 203);
 		add(list);
-		
+
 		JButton button = new JButton("Enviar");
 		button.setBounds(752, 442, 82, 29);
 		button.addActionListener(new ActionListener() {
@@ -83,10 +84,10 @@ public class PanelEmail extends JPanel {
 				}
 				button.setText("Enviar");
 			}
-			
+
 		});
-		add(button);	
-		
+		add(button);
+
 		JButton btnSeleccionar = new JButton("Seleccionar");
 		btnSeleccionar.setBounds(704, 146, 117, 29);
 		btnSeleccionar.addActionListener(new ActionListener() {
@@ -95,30 +96,31 @@ public class PanelEmail extends JPanel {
 				System.out.println("Boton \"Seleccionar\" pulsado");
 				list.removeAll();
 				eliminarFamiliasDestinatarias();
-				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText(), choice_1.getSelectedItem());
-				for (String destinatario : listaDestinatarios){
+				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText(),
+						choice_1.getSelectedItem());
+				for (String destinatario : listaDestinatarios) {
 					list.add(destinatario);
 				}
 			}
-			
+
 		});
 		add(btnSeleccionar);
-		
+
 		asuntoEmail = new JTextField();
 		asuntoEmail.setBounds(84, 40, 399, 43);
 		add(asuntoEmail);
 		asuntoEmail.setColumns(10);
-		
+
 		JLabel lblAsuntoDelCorreo = new JLabel("Asunto del correo:");
 		lblAsuntoDelCorreo.setBounds(84, 6, 165, 33);
 		lblAsuntoDelCorreo.setFont(new Font(lblAsuntoDelCorreo.getFont().getName(), Font.PLAIN, 15));
 		add(lblAsuntoDelCorreo);
-		
+
 		JLabel lblNewLabel = new JLabel("Cuerpo del correo:");
 		lblNewLabel.setBounds(84, 85, 199, 36);
 		lblNewLabel.setFont(new Font(lblNewLabel.getFont().getName(), Font.PLAIN, 15));
 		add(lblNewLabel);
-		
+
 		Choice choiceAniadir = new Choice();
 		choiceAniadir.setBounds(84, 474, 199, 27);
 		choiceAniadir.add("Numero Familia");
@@ -129,7 +131,7 @@ public class PanelEmail extends JPanel {
 		choiceAniadir.add("Correo");
 		choiceAniadir.add("Pagado");
 		add(choiceAniadir);
-		
+
 		JButton btnAniadir = new JButton("Insertar");
 		btnAniadir.setBounds(335, 474, 108, 27);
 		btnAniadir.addActionListener(new ActionListener() {
@@ -139,47 +141,68 @@ public class PanelEmail extends JPanel {
 				String aAniadir = "";
 				System.out.println(choiceAniadir.getSelectedItem());
 				switch (choiceAniadir.getSelectedItem()) {
-				case "Numero Familia": aAniadir = "<<numeroFamilia>>"; break;
-				case "Nombre Familia": aAniadir = "<<nombreFamilia>>"; break;
-				case "Participantes": aAniadir = "<<participantes>>"; break;
-				case "Tallas": aAniadir = "<<tallas>>"; break;
-				case "Telefono": aAniadir = "<<telefono>>"; break;
-				case "Correo": aAniadir = "<<correo>>"; break;
-				case "Pagado": aAniadir = "<<pagado>>"; break;
-				default: aAniadir = ""; break;
+				case "Numero Familia":
+					aAniadir = "<<numeroFamilia>>";
+					break;
+				case "Nombre Familia":
+					aAniadir = "<<nombreFamilia>>";
+					break;
+				case "Participantes":
+					aAniadir = "<<participantes>>";
+					break;
+				case "Tallas":
+					aAniadir = "<<tallas>>";
+					break;
+				case "Telefono":
+					aAniadir = "<<telefono>>";
+					break;
+				case "Correo":
+					aAniadir = "<<correo>>";
+					break;
+				case "Pagado":
+					aAniadir = "<<pagado>>";
+					break;
+				default:
+					aAniadir = "";
+					break;
 				}
-				cuerpoEmail.setText(cuerpoEmail.getText() + aAniadir);	
+				// cuerpoEmail.setText(cuerpoEmail.getText() + aAniadir);
+				try {
+					cuerpoEmail.getDocument().insertString(cuerpoEmail.getCaretPosition(), aAniadir, null);
+				} catch (BadLocationException e1) {
+					System.err.println("Error al añadir la variable al correo");
+				}
 			}
-			
+
 		});
 		add(btnAniadir);
 	}
-	
+
 	/**
 	 * Reemplaza las variables del correo genérico con los datos de cada familia
+	 * 
 	 * @param correo que queremos enviar
-	 * @param datos que queremos utilizar
+	 * @param datos  que queremos utilizar
 	 * @return el correo personalizado
 	 */
 	private static String reestructuraEmail(String correo, String[] datos) {
 		correo = correo.replace("<<numeroFamilia>>", datos[BD.NUMERO_FAMILIA])
-			.replace("<<nombreFamilia>>", datos[BD.NOMBRE_FAMILIA])
-			.replace("<<participantes>>", datos[BD.PARTICIPANTES])
-			.replace("<<tallas>>", datos[BD.TALLAS])
-			.replace("<<telefono>>", datos[BD.TELEFONO])
-			.replace("<<correo>>", datos[BD.CORREO])
-			.replace("<<pagado>>", datos[BD.PAGADO]);
-		return(correo);
+				.replace("<<nombreFamilia>>", datos[BD.NOMBRE_FAMILIA])
+				.replace("<<participantes>>", datos[BD.PARTICIPANTES]).replace("<<tallas>>", datos[BD.TALLAS])
+				.replace("<<telefono>>", datos[BD.TELEFONO]).replace("<<correo>>", datos[BD.CORREO])
+				.replace("<<pagado>>", datos[BD.PAGADO]);
+		return (correo);
 	}
-	
+
 	/**
 	 * Añade una nueva familia para enviar el email
+	 * 
 	 * @param nueva familia
 	 */
 	public static void aniadirFamiliaDestinataria(String[] familia) {
 		familiasDestinatarias.add(familia);
 	}
-	
+
 	/**
 	 * Elimina todos los datos de la lista de familias destinatarios
 	 */

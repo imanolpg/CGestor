@@ -115,8 +115,7 @@ public class PanelGeneral extends JPanel {
 									try {
 										Thread.sleep(1000);
 									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
+										System.err.println("ERROR al buscar el dato");
 									}
 								}
 							}
@@ -147,6 +146,10 @@ public class PanelGeneral extends JPanel {
 		}
 	}
 	
+	/**
+	 * Devuelve un String[][] de los datos que hay en ese momento en la tabla
+	 * @return datos de la tabla
+	 */
 	public static String[][] getDatosTabla(){
 		String[][] aDevolver = new String[table.getRowCount()][table.getColumnCount()];
 		for (int fila = 0; fila<table.getRowCount(); fila = fila + 1) {
