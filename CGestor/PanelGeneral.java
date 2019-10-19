@@ -16,13 +16,10 @@ import javax.swing.JTextField;
 
 public class PanelGeneral extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static JTable table;
-	private JTextField textoABuscar;
-	private DefaultTableModel modelo;
+	private static JTextField textoABuscar;
+	private static DefaultTableModel modelo;
 
 	public PanelGeneral() {
 		setLayout(null);
@@ -103,26 +100,22 @@ public class PanelGeneral extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {	
-				Thread busqueda = new Thread() { 
+				new Thread() { 
 					public void run() {
 						for (int fila = 0; fila<table.getRowCount(); fila = fila + 1) {
 							for (int columna = 0; columna<table.getColumnCount(); columna = columna + 1) {
 								if(table.getValueAt(fila, columna).equals(textoABuscar.getText())) {
 									btnBuscar.setText("Siguiente");
 									table.setRowSelectionInterval(fila, fila);
-									System.out.println("ENCONTRADO");
-									try {
-										Thread.sleep(1000);
-									} catch (InterruptedException e) {
-										System.err.println("ERROR al buscar el dato");
-									}
 								}
 							}
 						}
-						btnBuscar.setText("Buscar");
 					}
-				};
-				busqueda.run();
+				}.run();
+
+				btnBuscar.setText("Siguiente");
+				table.setRowSelectionInterval(0,0);
+				new VentanaError("Prueba de error");
 			}
 			
 		});

@@ -17,9 +17,8 @@ public class Main {
 
 	// TODO log
 	// TODO JUnit
-	// TODO boton añadir/borrar nuevo elemento base de datos
 	// TODO Cambiar texto boton a enviando
-	// TODO hacer que en el .jar se guarden todos los archivos
+	// TODO  ventana de error emergente
 
 	static Canvas canvas;
 	static PanelGeneral panelGeneral;
