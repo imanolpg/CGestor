@@ -70,12 +70,12 @@ public class PanelEmail extends JPanel {
 		list.setBounds(553, 227, 416, 203);
 		add(list);
 
-		JButton button = new JButton("Enviar");
-		button.setBounds(752, 442, 82, 29);
-		button.addActionListener(new ActionListener() {
+		JButton btnEnviar = new JButton("Enviar");
+		btnEnviar.setBounds(752, 442, 82, 29);
+		btnEnviar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				button.setText("Enviando mensaje...");
+				btnEnviar.setText("Enviando mensaje..."); //no funciona
 				System.out.println("Boton \"Enviar\" pulsado");
 				System.out.println(familiasDestinatarias.size());
 				for (String[] destinatario : familiasDestinatarias) {
@@ -83,11 +83,11 @@ public class PanelEmail extends JPanel {
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
 					Main.enviarEmail(asunto, correo, destinatario[BD.CORREO]);
 				}
-				button.setText("Enviar");
+				btnEnviar.setText("Enviar");
 			}
 
 		});
-		add(button);
+		add(btnEnviar);
 
 		JButton btnSeleccionar = new JButton("Seleccionar");
 		btnSeleccionar.setBounds(704, 146, 117, 29);
@@ -112,15 +112,15 @@ public class PanelEmail extends JPanel {
 		add(asuntoEmail);
 		asuntoEmail.setColumns(10);
 
-		JLabel lblAsuntoDelCorreo = new JLabel("Asunto del correo:");
-		lblAsuntoDelCorreo.setBounds(84, 6, 165, 33);
-		lblAsuntoDelCorreo.setFont(new Font(lblAsuntoDelCorreo.getFont().getName(), Font.PLAIN, 15));
-		add(lblAsuntoDelCorreo);
+		JLabel lblInfo = new JLabel("Asunto del correo:");
+		lblInfo.setBounds(84, 6, 165, 33);
+		lblInfo.setFont(new Font(lblInfo.getFont().getName(), Font.PLAIN, 15));
+		add(lblInfo);
 
-		JLabel lblNewLabel = new JLabel("Cuerpo del correo:");
-		lblNewLabel.setBounds(84, 85, 199, 36);
-		lblNewLabel.setFont(new Font(lblNewLabel.getFont().getName(), Font.PLAIN, 15));
-		add(lblNewLabel);
+		JLabel lblInfo1 = new JLabel("Cuerpo del correo:");
+		lblInfo1.setBounds(84, 85, 199, 36);
+		lblInfo1.setFont(new Font(lblInfo1.getFont().getName(), Font.PLAIN, 15));
+		add(lblInfo1);
 
 		Choice choiceAniadir = new Choice();
 		choiceAniadir.setBounds(84, 474, 199, 27);
@@ -167,7 +167,6 @@ public class PanelEmail extends JPanel {
 					aAniadir = "";
 					break;
 				}
-				// cuerpoEmail.setText(cuerpoEmail.getText() + aAniadir);
 				try {
 					cuerpoEmail.getDocument().insertString(cuerpoEmail.getCaretPosition(), aAniadir, null);
 				} catch (BadLocationException e1) {

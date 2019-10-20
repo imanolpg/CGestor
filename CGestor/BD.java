@@ -6,7 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
-
+import java.util.logging.Level;
+/**
+ * Clase que gestiona todas las interacciones con la base de datos
+ * @author imanol
+ *
+ */
 public class BD {
 	
 	public static final int NUMERO_FAMILIA = 0;
@@ -21,7 +26,7 @@ public class BD {
 	public static final int CAMPO = 1;
 	public static final int VALOR = 2;
 
-	// {"id familia", "campo a cambiar", "nuevo valor"}
+	// {"id familia", "campo a cambiar", "nuevo valor", "viejo valor"}
 	private static ArrayList<String[]> actualizaciones;
 	
 	/**
@@ -30,8 +35,8 @@ public class BD {
 	 * @param campo que queremos cambiar
 	 * @param valor nuevo valor del campo
 	 */
-	public static void aniadirActualizacion(String id, String campo, String valor) {
-		actualizaciones.add(new String[] {id, campo, valor});
+	public static void aniadirActualizacion(String id, String campo, String valorNuevo, String valorViejo) {
+		actualizaciones.add(new String[] {id, campo, valorNuevo, valorViejo});
 	}
 	
 	/** 
@@ -61,9 +66,11 @@ public class BD {
 	        	};
 	        	participantes.add(familia);
 	        }
+	        Main.log.log(Level.INFO, "Base de datos leida correctamente");
 			stmt.close();
 			conexion.close();
 		}catch (Exception e) {
+			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
 		System.out.println("Conectado correctamente a la base de datos");
@@ -80,9 +87,7 @@ public class BD {
 	 * @return String[] de las columnas
 	 */
 	public static String[] getColumnasTabla(){
-		
-		String[] nombresColumnas = {"Numero de familia", "Nombre de la familia", "Participantes", "Tallas de los disfraces", "Telefono", "Email", "Pagado" };
-		
+		String[] nombresColumnas = {"Numero de familia", "Nombre de la familia", "Participantes", "Tallas de los disfraces", "Telefono", "Email", "Pagado" };	
 		return(nombresColumnas);
 	}
 
@@ -108,16 +113,27 @@ public class BD {
 		    		pstmt.executeUpdate();
 		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
-		    	
+		    	//logearCadaCambio(); TODO descomentar cuando se añadan en actualizaciones cada valor cambiado
+		    	Main.log.log(Level.INFO, "Base de datos actualizada");
 		    	pstmt.close();
 		    	conexion.close();
 	        }catch (SQLException e) {
-		            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
+	        	Main.log.log(Level.WARNING, "La base de datos no se ha podido actualizar");
+	            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
 	        }
 	}
 	
 	/**
-	 * 
+	 * Escribe un log de cada cambio que se ha hecho a la base de datos
+	 */
+	private static void logearCadaCambio() {
+		for (String[] datos : actualizaciones) {
+			Main.log.log(Level.INFO, "Cambiado(" + datos[0] + "," + datos[1] + "," + datos[2] + "," + datos[3] + ")");
+		}
+	}
+	
+	/**
+	 * Devuelve 
 	 * @param email
 	 * @return
 	 */
@@ -138,5 +154,16 @@ public class BD {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
 		return(new String[]{"1","2"});
+	}
+	
+	/**
+	 * Añade un nuevo cambio a la variable actualizaciones para que se muestre en el log
+	 * @param id
+	 * @param campo
+	 * @param valorNuevo
+	 * @param valorViejo
+	 */
+	public static void aniadirDatoActualizado(String id, String campo, String valorNuevo, String valorViejo) {
+		actualizaciones.add(new String[] {id, campo, valorNuevo, valorViejo});
 	}
 }

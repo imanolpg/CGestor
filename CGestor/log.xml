@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-10-20T20:19:18</date>
+  <millis>1571595558883</millis>
+  <sequence>0</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>getDatosTabla</method>
+  <thread>1</thread>
+  <message>Base de datos leida correctamente</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:20</date>
+  <millis>1571595560790</millis>
+  <sequence>1</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>PanelConfiguracion</class>
+  <method>cargarCredenciales</method>
+  <thread>1</thread>
+  <message>Credenciales cargadas</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:22</date>
+  <millis>1571595562366</millis>
+  <sequence>2</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:22</date>
+  <millis>1571595562549</millis>
+  <sequence>3</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:22</date>
+  <millis>1571595562731</millis>
+  <sequence>4</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:22</date>
+  <millis>1571595562915</millis>
+  <sequence>5</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:23</date>
+  <millis>1571595563098</millis>
+  <sequence>6</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:23</date>
+  <millis>1571595563274</millis>
+  <sequence>7</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:23</date>
+  <millis>1571595563446</millis>
+  <sequence>8</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:23</date>
+  <millis>1571595563618</millis>
+  <sequence>9</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:23</date>
+  <millis>1571595563802</millis>
+  <sequence>10</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:23</date>
+  <millis>1571595563966</millis>
+  <sequence>11</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:24</date>
+  <millis>1571595564129</millis>
+  <sequence>12</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:24</date>
+  <millis>1571595564296</millis>
+  <sequence>13</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+<record>
+  <date>2019-10-20T20:19:24</date>
+  <millis>1571595564469</millis>
+  <sequence>14</sequence>
+  <logger>logger</logger>
+  <level>INFO</level>
+  <class>BD</class>
+  <method>actualizar</method>
+  <thread>14</thread>
+  <message>Base de datos actualizada</message>
+</record>
+</log>

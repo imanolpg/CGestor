@@ -1,5 +1,10 @@
 import javax.swing.JFrame;
 
+/**
+ * Clase que crea la ventana del programa
+ * @author imanol
+ *
+ */
 public class Canvas extends JFrame{
 
 	/**
