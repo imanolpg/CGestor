@@ -1,36 +1,45 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+/**
+ * Clase principal del programa
+ * @author imanol
+ *
+ */
 public class Main {
 
 	// TODO log
 	// TODO JUnit
 	// TODO Cambiar texto boton a enviando
-	// TODO  ventana de error emergente
 
 	static Canvas canvas;
 	static PanelGeneral panelGeneral;
 	static PanelEmail panelEmail;
 	static PanelConfiguracion panelConfiguracion;
 	static ArrayList<String[]> actualizaciones;
-
+	
+	static Logger log;
+	
 	public static void main(String[] args) {
-		panelGeneral = new PanelGeneral();
-		panelEmail = new PanelEmail();
-		panelConfiguracion = new PanelConfiguracion();
-		panelConfiguracion.cargarCredenciales();
+		log = Logger.getLogger("logger"); // creo el Logger
+		try {
+			log.addHandler(new FileHandler("log.xml"));
+		} catch (Exception e) {
+			System.err.println("Error al crear el handler: " + e.getMessage());
+		}
+		panelGeneral = new PanelGeneral(); //creo el panel general
+		panelEmail = new PanelEmail(); //creo el panel email
+		panelConfiguracion = new PanelConfiguracion(); //creo el panel de configuracion
 		createWindow();
 	}
 
@@ -119,16 +128,12 @@ public class Main {
 	 * @param destinatario al que se le va a enviar
 	 */
 	public static void enviarEmail(String asunto, String email, String destinatario) {
-
-		// Get properties object
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
-
-		// get Session
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(panelConfiguracion.getEmail(), panelConfiguracion.getContrasenia());
@@ -140,32 +145,12 @@ public class Main {
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
 			message.setSubject(asunto);
 			message.setText(email);
-
-			// send message
 			Transport.send(message);
+			log.log(Level.INFO, "Mensaje enviado a: " + destinatario);
 			System.out.println("Email enviado a: " + destinatario);
 		} catch (MessagingException e) {
 			System.err.println("Error al enviar el email: " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Escribe un log de todos los cambios por seguridad
-	 * @param id localizador de la familia
-	 * @param campo a cambiar
-	 * @param valorNuevo valor introducido
-	 * @param valorViejo valor anterior
-	 */
-	public static void crearLog(String id, String campo, String valorNuevo, String valorViejo) {
-		try {
-			PrintStream fs = new PrintStream("Log.log");
-			DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");  
-			LocalDateTime now = LocalDateTime.now();  
-			fs.println("(" + formatoFecha.format(now) + ") CAMBIO id:" + id + ", campo:" + campo + ", valorViejo:" + valorViejo + ", valorNuevo:" + valorNuevo);
-			fs.close();
-			System.out.println("Log guardado correctamente");
-		} catch (FileNotFoundException e) {
-			System.err.println("ERROR al escribir al fichero: " + e.getMessage());
+			log.log(Level.WARNING, "Error al enviar mensaje a: " + destinatario);
 		}
 	}
 }

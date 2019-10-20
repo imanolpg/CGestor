@@ -14,12 +14,19 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JTextField;
 
+/**
+ * Clase que crea el JPanel general
+ * @author imanol
+ *
+ */
 public class PanelGeneral extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
 	private static JTable table;
 	private static JTextField textoABuscar;
 	private static DefaultTableModel modelo;
+	private static Thread busqueda;
 
 	public PanelGeneral() {
 		setLayout(null);
@@ -28,7 +35,7 @@ public class PanelGeneral extends JPanel {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(74, 6, 747, 462);
 		add(scrollPane);
-		
+
 		modelo = new DefaultTableModel();
 		for (String columna : BD.getColumnasTabla())
 			modelo.addColumn(columna);
@@ -39,12 +46,12 @@ public class PanelGeneral extends JPanel {
 		ajustarTamanioColumnas();
 		table.setFillsViewportHeight(true);
 		table.addPropertyChangeListener(new PropertyChangeListener() {
-			
+
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if ("tableCellEditor".equals(evt.getPropertyName())) {
 					ajustarTamanioColumnas();
-					BD.actualizar();
+					//añadir actualizaciones de los datos cambiados BD.aniadirDatoActualizado() y descomentar la linea de BD.actualizar
 				}
 			}
 		});
@@ -62,20 +69,20 @@ public class PanelGeneral extends JPanel {
 		});
 		btnActualizar.setBounds(428, 480, 117, 29);
 		add(btnActualizar);
-		
+
 		JButton btnAniadir = new JButton("Añadir");
 		btnAniadir.setBounds(853, 357, 117, 29);
 		btnAniadir.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				modelo.addRow(new Object[]{"", "", "", "", "", "", ""});
+				modelo.addRow(new Object[] { "", "", "", "", "", "", "" });
 				System.out.println("Añadido un nuevo registro");
 			}
-			
+
 		});
 		add(btnAniadir);
-		
+
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(853, 389, 117, 29);
 		btnEliminar.addActionListener(new ActionListener() {
@@ -85,39 +92,58 @@ public class PanelGeneral extends JPanel {
 				modelo.removeRow(table.getSelectedRow());
 				System.out.println("Eliminado el registro seleccionado");
 			}
-			
+
 		});
 		add(btnEliminar);
-		
+
 		textoABuscar = new JTextField();
 		textoABuscar.setBounds(843, 64, 139, 26);
 		add(textoABuscar);
 		textoABuscar.setColumns(10);
-		
+
+		JButton btnSiguiente = new JButton("Siguiente");
+		btnSiguiente.setBounds(843, 97, 139, 29);
+		btnSiguiente.setVisible(false);
+		btnSiguiente.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				busqueda.notify();
+			}
+
+		});
+		add(btnSiguiente);
+
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.setBounds(843, 97, 139, 29);
 		btnBuscar.addActionListener(new ActionListener() {
-			
+
 			@Override
-			public void actionPerformed(ActionEvent e) {	
-				new Thread() { 
+			public void actionPerformed(ActionEvent e) {
+				busqueda = new Thread() {
 					public void run() {
-						for (int fila = 0; fila<table.getRowCount(); fila = fila + 1) {
-							for (int columna = 0; columna<table.getColumnCount(); columna = columna + 1) {
-								if(table.getValueAt(fila, columna).equals(textoABuscar.getText())) {
-									btnBuscar.setText("Siguiente");
+						btnSiguiente.setVisible(true);
+						btnBuscar.setVisible(false);
+						for (int fila = 0; fila < table.getRowCount(); fila = fila + 1) {
+							for (int columna = 0; columna < table.getColumnCount(); columna = columna + 1) {
+								if (table.getValueAt(fila, columna).equals(textoABuscar.getText())) {
 									table.setRowSelectionInterval(fila, fila);
+									System.out.println("hilo");
+									try {
+										synchronized (this) {
+											this.wait();
+										}
+									} catch (InterruptedException e) {
+										System.err.println("Error al esperar al hilo de busqueda: " + e.getMessage());
+									}
+									System.out.println("control");
 								}
 							}
 						}
 					}
-				}.run();
-
-				btnBuscar.setText("Siguiente");
-				table.setRowSelectionInterval(0,0);
-				new VentanaError("Prueba de error");
+				};
+				busqueda.run();
 			}
-			
 		});
 		add(btnBuscar);
 	}
@@ -128,7 +154,7 @@ public class PanelGeneral extends JPanel {
 	private static void ajustarTamanioColumnas() {
 		final TableColumnModel columnModel = table.getColumnModel();
 		for (int columna = 0; columna < table.getColumnCount(); columna++) {
-			int width = BD.getColumnasTabla()[columna].length() * 6; //tamaño minimo
+			int width = BD.getColumnasTabla()[columna].length() * 6; // tamaño minimo
 			for (int row = 0; row < table.getRowCount(); row++) {
 				TableCellRenderer renderer = table.getCellRenderer(row, columna);
 				Component comp = table.prepareRenderer(renderer, row, columna);
@@ -137,15 +163,15 @@ public class PanelGeneral extends JPanel {
 			columnModel.getColumn(columna).setPreferredWidth(width + 10);
 		}
 	}
-	
+
 	/**
 	 * Devuelve un String[][] de los datos que hay en ese momento en la tabla
 	 * @return datos de la tabla
 	 */
-	public static String[][] getDatosTabla(){
+	public static String[][] getDatosTabla() {
 		String[][] aDevolver = new String[table.getRowCount()][table.getColumnCount()];
-		for (int fila = 0; fila<table.getRowCount(); fila = fila + 1) {
-			for (int columna = 0; columna<table.getColumnCount(); columna = columna + 1) {
+		for (int fila = 0; fila < table.getRowCount(); fila = fila + 1) {
+			for (int columna = 0; columna < table.getColumnCount(); columna = columna + 1) {
 				aDevolver[fila][columna] = (String) table.getValueAt(fila, columna);
 			}
 		}

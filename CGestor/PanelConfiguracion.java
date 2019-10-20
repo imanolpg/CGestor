@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintStream;
+import java.util.logging.Level;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -70,6 +71,8 @@ public class PanelConfiguracion extends JPanel {
 
 		});
 		add(btnGuardar);
+		
+		cargarCredenciales();
 	}
 
 	/**
@@ -81,6 +84,7 @@ public class PanelConfiguracion extends JPanel {
 			email.setText(credenciales[0]);
 			clave.setText(credenciales[1]);
 		}
+		Main.log.log(Level.INFO, "Credenciales cargadas");
 		System.out.println("Credenciales cargadas");
 	}
 
@@ -95,8 +99,10 @@ public class PanelConfiguracion extends JPanel {
 			PrintStream fs = new PrintStream("credenciales.txt");
 			fs.println(correo);
 			fs.print(clave);
+			Main.log.log(Level.INFO, "Credenciales guardadas");
 			fs.close();
 		} catch (Exception e) {
+			Main.log.log(Level.WARNING, "Error al cargar credenciales");
 			System.err.println("Error al escribir las credenciales al fichero: " + e.getMessage());
 		}
 	}
