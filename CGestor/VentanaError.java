@@ -4,6 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Ventana de error que se lanza cuando hay un error
+ * @author imanol
+ *
+ */
 public class VentanaError extends JFrame{
 
 	/**
