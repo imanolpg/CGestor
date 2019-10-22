@@ -25,6 +25,8 @@ public class PanelConfiguracion extends JPanel {
 
 	private static JTextField email;
 	private static JPasswordField clave;
+	
+	private static final String pathCredenciales = "privado/credenciales.txt"; 
 
 	/**
 	 * Create the panel.
@@ -96,7 +98,7 @@ public class PanelConfiguracion extends JPanel {
 	 */
 	public void guardarCredenciales(String correo, String clave) {
 		try {
-			PrintStream fs = new PrintStream("credenciales.txt");
+			PrintStream fs = new PrintStream(pathCredenciales);
 			fs.println(correo);
 			fs.print(clave);
 			Main.log.log(Level.INFO, "Credenciales guardadas");
@@ -118,7 +120,7 @@ public class PanelConfiguracion extends JPanel {
 
 		try {
 			// open input stream test.txt for reading purpose.
-			BufferedReader br = new BufferedReader(new FileReader("credenciales.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(pathCredenciales));
 			int x = 0;
 			while ((lineaActual = br.readLine()) != null) {
 				credenciales[x] = lineaActual;

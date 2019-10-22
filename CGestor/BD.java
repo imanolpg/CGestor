@@ -29,6 +29,8 @@ public class BD {
 	// {"id familia", "campo a cambiar", "nuevo valor", "viejo valor"}
 	private static ArrayList<String[]> actualizaciones;
 	
+	private final static String pathBD = "jdbc:sqlite:privado/familias.db";
+	
 	/**
 	 * Aniade una nueva actualizacion para guardarlo en la base de datos
 	 * @param id localizador de la familia
@@ -51,7 +53,7 @@ public class BD {
 		participantes = new ArrayList<String[]>();
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conexion = DriverManager.getConnection("jdbc:sqlite:familias.db");
+			conexion = DriverManager.getConnection(pathBD);
 			stmt = conexion.createStatement();
 			resultado = stmt.executeQuery("SELECT * FROM datosFamilias");
 	        while (resultado.next()) {
@@ -97,7 +99,7 @@ public class BD {
 	public static void actualizar() {
 		
 		    try {
-		    	Connection conexion = DriverManager.getConnection("jdbc:sqlite:familias.db");
+		    	Connection conexion = DriverManager.getConnection(pathBD);
 		    	Statement stmt = conexion.createStatement();
 		    	stmt.executeUpdate("DELETE FROM datosFamilias");
 		    	stmt.close();
@@ -143,7 +145,7 @@ public class BD {
 		ResultSet resultado;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			conexion = DriverManager.getConnection("jdbc:sqlite:familias.db");
+			conexion = DriverManager.getConnection(pathBD);
 			stmt = conexion.createStatement();
 			resultado = stmt.executeQuery("SELECT * FROM datosFamilias WHERE email='" + email + "'");
 	        System.out.println("Resultado: " + resultado);

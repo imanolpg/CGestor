@@ -33,7 +33,7 @@ public class Main {
 	public static void main(String[] args) {
 		log = Logger.getLogger("logger"); // creo el Logger
 		try {
-			log.addHandler(new FileHandler("log.xml"));
+			log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {
 			System.err.println("Error al crear el handler: " + e.getMessage());
 		}
