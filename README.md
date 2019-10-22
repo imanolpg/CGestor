@@ -19,6 +19,7 @@ Programa en Java para gestionar usuarios.
 
 - SqLite
 - Librería para el servicio SMP
+- JUnit4
 
 ## Git
 
@@ -34,4 +35,4 @@ Programa en Java para gestionar usuarios.
         
 ## Uso
 
-Este programa se ha hecho con fines educativos. Ha sido compartido para que las personas que lo necesiten lo utilicen. Bajo ningún concepto me hago responsable en caso de pérdida de los datos o de cualquier error que pueda haber en el desarrollo del programa.
+Este programa ha sido desarrollado con fines educativos. Es un proyecto público para que las personas que lo necesiten lo utilicen. Bajo ningún concepto me hago responsable en caso de pérdida de los datos o de cualquier error que pueda generar el programa. Utilice este programa bajo su propia responsabilidad.
