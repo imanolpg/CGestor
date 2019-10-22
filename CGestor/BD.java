@@ -155,15 +155,4 @@ public class BD {
 		}
 		return(new String[]{"1","2"});
 	}
-	
-	/**
-	 * Añade un nuevo cambio a la variable actualizaciones para que se muestre en el log
-	 * @param id
-	 * @param campo
-	 * @param valorNuevo
-	 * @param valorViejo
-	 */
-	public static void aniadirDatoActualizado(String id, String campo, String valorNuevo, String valorViejo) {
-		actualizaciones.add(new String[] {id, campo, valorNuevo, valorViejo});
-	}
 }
