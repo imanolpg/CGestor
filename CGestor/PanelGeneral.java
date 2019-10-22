@@ -13,6 +13,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 /**
  * Clase que crea el JPanel general
@@ -41,6 +43,18 @@ public class PanelGeneral extends JPanel {
 			modelo.addColumn(columna);
 		for (Object[] familia : BD.getDatosTabla())
 			modelo.addRow(familia);
+		modelo.addTableModelListener(new TableModelListener() {
+			
+			TableModelEvent cambio;
+			@Override
+			public void tableChanged(TableModelEvent e) {
+				cambio = e;
+			}
+			
+			public TableModelEvent getValorAntiguo() {
+				return(cambio);
+			}
+		});
 		table = new JTable(modelo);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		ajustarTamanioColumnas();
@@ -55,7 +69,6 @@ public class PanelGeneral extends JPanel {
 				}
 			}
 		});
-
 		scrollPane.setViewportView(table);
 
 		JButton btnActualizar = new JButton("Actualizar");

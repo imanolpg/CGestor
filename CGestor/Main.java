@@ -18,9 +18,9 @@ import javax.mail.internet.*;
  */
 public class Main {
 
-	// TODO log
-	// TODO JUnit
-	// TODO Cambiar texto boton a enviando
+	// TODO buscar cosas en tabla
+	// TODO encriptar credenciales
+	// TODO log de cambios de la tabla
 
 	static Canvas canvas;
 	static PanelGeneral panelGeneral;
