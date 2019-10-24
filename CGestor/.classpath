@@ -2,9 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_201]"/>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="lib" path="/Users/imanol/Desktop/CGestor/CGestor/dependencias/sqlite-jdbc-3.27.2.1.jar"/>
-	<classpathentry kind="lib" path="/Users/imanol/Desktop/CGestor/CGestor/dependencias/activation.jar"/>
-	<classpathentry kind="lib" path="/Users/imanol/Desktop/CGestor/CGestor/dependencias/mail.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="dependencias/activation.jar"/>
+	<classpathentry kind="lib" path="dependencias/mail.jar"/>
+	<classpathentry kind="lib" path="dependencias/sqlite-jdbc-3.27.2.1.jar"/>
+	<classpathentry kind="lib" path="dependencias/jxl.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

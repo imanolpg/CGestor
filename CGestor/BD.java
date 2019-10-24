@@ -31,6 +31,8 @@ public class BD {
 	
 	private final static String pathBD = "jdbc:sqlite:privado/familias.db";
 	
+	private static String[] columnas;
+	
 	/**
 	 * Aniade una nueva actualizacion para guardarlo en la base de datos
 	 * @param id localizador de la familia
@@ -89,8 +91,12 @@ public class BD {
 	 * @return String[] de las columnas
 	 */
 	public static String[] getColumnasTabla(){
-		String[] nombresColumnas = {"Numero de familia", "Nombre de la familia", "Participantes", "Tallas de los disfraces", "Telefono", "Email", "Pagado" };	
-		return(nombresColumnas);
+		//String[] nombresColumnas = {"Numero de familia", "Nombre de la familia", "Participantes", "Tallas de los disfraces", "Telefono", "Email", "Pagado" };	
+		return(columnas);
+	}
+	
+	public static void setColumnasTabla(ArrayList<String> arraylistColumnas) {
+		columnas = (String[]) arraylistColumnas.toArray();
 	}
 
 	/** 
