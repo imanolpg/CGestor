@@ -1,9 +1,13 @@
+package JPanels;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+
+import Main.BD;
+
 import javax.swing.JButton;
 
 import java.awt.Component;
@@ -29,6 +33,8 @@ public class PanelGeneral extends JPanel {
 	private static JTextField textoABuscar;
 	private static DefaultTableModel modelo;
 	private static Thread busqueda;
+	
+	Main.deXLSaBD("privado/familias.db");
 
 	public PanelGeneral() {
 		setLayout(null);

@@ -1,3 +1,4 @@
+package JPanels;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JEditorPane;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
+
+import Main.BD;
+import Main.Main;
 
 public class PanelEmail extends JPanel {
 

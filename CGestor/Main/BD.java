@@ -1,3 +1,4 @@
+package Main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +8,8 @@ import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
+
+import JPanels.PanelGeneral;
 /**
  * Clase que gestiona todas las interacciones con la base de datos
  * @author imanol
@@ -29,7 +32,7 @@ public class BD {
 	// {"id familia", "campo a cambiar", "nuevo valor", "viejo valor"}
 	private static ArrayList<String[]> actualizaciones;
 	
-	private final static String pathBD = "jdbc:sqlite:privado/familias.db";
+	public final static String pathBD = "jdbc:sqlite:privado/familias.db";
 	
 	private static String[] columnas;
 	
@@ -95,6 +98,10 @@ public class BD {
 		return(columnas);
 	}
 	
+	/**
+	 * Guarda en la variable columnas las columnas de la base de datos
+	 * @param array list con los Strings de columnas
+	 */
 	public static void setColumnasTabla(ArrayList<String> arraylistColumnas) {
 		columnas = (String[]) arraylistColumnas.toArray();
 	}

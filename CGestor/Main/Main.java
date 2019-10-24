@@ -1,8 +1,14 @@
+package Main;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import JPanels.PanelConfiguracion;
+import JPanels.PanelEmail;
+import JPanels.PanelGeneral;
+
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.FileHandler;
@@ -28,7 +34,7 @@ public class Main {
 	static PanelConfiguracion panelConfiguracion;
 	static ArrayList<String[]> actualizaciones;
 	
-	static Logger log;
+	static public Logger log;
 	
 	public static void main(String[] args) {
 		log = Logger.getLogger("logger"); // creo el Logger
