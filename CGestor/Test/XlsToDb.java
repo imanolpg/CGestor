@@ -16,5 +16,4 @@ public class XlsToDb {
 			System.out.println("Error: " + e.getStackTrace());
 		}
 	}
-
 }
