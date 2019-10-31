@@ -45,20 +45,17 @@ public class PanelEmail extends JPanel {
 		}
 		add(choice);
 
-		Choice choice_1 = new Choice();
-		choice_1.setBounds(724, 76, 102, 36);
-		choice_1.add("igual");
-		choice_1.add("diferente");
-		choice_1.add("todos");
-		add(choice_1);
+		Choice opcionColumnas = new Choice();
+		opcionColumnas.setBounds(724, 76, 102, 36);
+		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())
+			opcionColumnas.add(nuevaOpcion);
+		add(opcionColumnas);
 
 		JFormattedTextField comparador = new JFormattedTextField();
 		comparador.setBounds(863, 76, 108, 36);
 		add(comparador);
 
 		JEditorPane cuerpoEmail = new JEditorPane();
-		// editorPane.setBounds(84, 122, 399, 336);
-		// add(editorPane);
 
 		JScrollPane scrollPane = new JScrollPane(cuerpoEmail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -102,7 +99,7 @@ public class PanelEmail extends JPanel {
 				list.removeAll();
 				eliminarFamiliasDestinatarias();
 				String[] listaDestinatarios = Main.getDestinatarios(choice.getSelectedIndex(), comparador.getText(),
-						choice_1.getSelectedItem());
+						opcionColumnas.getSelectedItem());
 				for (String destinatario : listaDestinatarios) {
 					list.add(destinatario);
 				}

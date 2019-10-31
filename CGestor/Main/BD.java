@@ -133,21 +133,18 @@ public class BD {
 		    	}
 		    	statement = statement.substring(0, statement.length()-1);
 		    	statement = statement + ") VALUES (";
-		    	for (String columna : columnas) {
+		    	for (int x=1; x<=columnas.length;)
 		    		statement = statement + "?" + ",";
-		    	}
 		    	statement = statement.substring(0, statement.length()-1);
 		    	statement = statement + ")";
-		    	System.out.println("Statement: " + statement);
 		    	//preparo el statement para guardar en la base de datos
 		    	PreparedStatement pstmt = conexion.prepareStatement(statement);
 		    	for (String[] familia : PanelGeneral.tabla.getDatos()) {
 		    		//TODO cambiar para que se haga con todas las columnas
 		    		for(int index=0; index<columnas.length; index=index+1) {
-		    			System.out.println(index + "\t" + familia[index]);
 		    			pstmt.setString(index + 1, familia[index]);
 		    		}
-		    		pstmt.executeUpdate(); //FIXME
+		    		pstmt.executeUpdate();
 		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
 		    	//logearCadaCambio(); TODO descomentar cuando se añadan en actualizaciones cada valor cambiado
