@@ -10,6 +10,7 @@ import JPanels.PanelEmail;
 import JPanels.PanelGeneral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -108,16 +109,17 @@ public class Main {
 	 */
 	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado, String accion) {
 		ArrayList<String> listaDestinatarios = new ArrayList<String>();
-		for (Object[] familia : BD.getDatosTabla()){
+		System.out.println("D: " + datoAEstudiar + "\tValor: " + resultadoBuscado + "\tAccion: " + accion);
+		for (String[] fila : PanelGeneral.tabla.getDatos()){
 			if (accion.equals("todos")) {
-				listaDestinatarios.add(familia[BD.CORREO].toString());
-			}
-			else if (familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("igual") ||
-				!familia[datoAEstudiar].toString().equals(resultadoBuscado) && accion.equals("diferente")) {
-				listaDestinatarios.add(familia[BD.CORREO].toString());
-				PanelEmail.aniadirFamiliaDestinataria((String[] )familia);
+				listaDestinatarios.add(fila[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
+			} else if (fila[datoAEstudiar].equals(resultadoBuscado) && accion.equals("igual") || !fila[datoAEstudiar].equals(resultadoBuscado) && accion.equals("diferente")) {
+				listaDestinatarios.add(fila[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
+				PanelEmail.aniadirFamiliaDestinataria(fila);
 			}
 		}
+		for (String g : listaDestinatarios)
+			System.out.println(g);
 		String[] aDevolver = new String[listaDestinatarios.size()];
 		for (int x=0; x<listaDestinatarios.size(); x++) {
 			aDevolver[x] = listaDestinatarios.get(x);

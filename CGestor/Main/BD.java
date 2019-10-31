@@ -133,7 +133,7 @@ public class BD {
 		    	}
 		    	statement = statement.substring(0, statement.length()-1);
 		    	statement = statement + ") VALUES (";
-		    	for (int x=1; x<=columnas.length;)
+		    	for (int x=1; x<=columnas.length; x=x+1)
 		    		statement = statement + "?" + ",";
 		    	statement = statement.substring(0, statement.length()-1);
 		    	statement = statement + ")";
