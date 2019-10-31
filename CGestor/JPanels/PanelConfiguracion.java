@@ -86,8 +86,8 @@ public class PanelConfiguracion extends JPanel {
 		});
 		add(btnGuardar);
 		
-		JLabel lblArchivoExcell = new JLabel("Archivo excell");
-		lblArchivoExcell.setBounds(124, 282, 117, 24);
+		JLabel lblArchivoExcell = new JLabel("Nombre archivo excel");
+		lblArchivoExcell.setBounds(124, 282, 175, 24);
 		lblArchivoExcell.setFont(new Font(lblArchivoExcell.getFont().getName(), Font.PLAIN, 15));
 		add(lblArchivoExcell);
 		
@@ -245,9 +245,9 @@ public class PanelConfiguracion extends JPanel {
 			statement = statement.substring(0, statement.length() - 1);
 			statement = statement + ");";
 			System.out.println("Statement: " + statement);
-			BD.setColumnasTabla(columnas);
+			//BD.setColumnasTabla(columnas);
 			filas.clear();
-			for (int fila = 1; fila <hoja.getRows(); fila = fila + 1) {
+			for (int fila=1; fila<hoja.getRows(); fila=fila+1) {
 				for (int columna = 0; columna <hoja.getColumns(); columna = columna + 1) {
 					columnas.add(hoja.getCell(fila, columna).getContents());
 				}

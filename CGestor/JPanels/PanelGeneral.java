@@ -1,25 +1,13 @@
 package JPanels;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JTextField;
 
 import Main.BD;
 import Main.Tabla;
-
-import javax.swing.JButton;
-
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
 /**
  * Clase que crea el JPanel general
@@ -32,21 +20,21 @@ public class PanelGeneral extends JPanel {
 	
 	public static Tabla tabla;
 	private static JTextField textoABuscar;
-	private static DefaultTableModel modelo;
+	//private static DefaultTableModel modelo;
 	private static Thread busqueda;
-	
-	BD.deXLSaBD("privado/familias.db");
 
 	public PanelGeneral() {
+
 		setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(74, 6, 747, 462);
 		add(scrollPane);
-
-		tabla = new Tabla();
 		
+		//BD.iniciaBaseDeDatos();
+		
+		tabla = new Tabla();
 		scrollPane.setViewportView(tabla);
 
 		JButton btnActualizar = new JButton("Actualizar");
@@ -67,7 +55,7 @@ public class PanelGeneral extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				modelo.addRow(new Object[] { "", "", "", "", "", "", "" });
+				tabla.aniadirFila(new String[tabla.getColumnas().length]);
 				System.out.println("Añadido un nuevo registro");
 			}
 
@@ -80,7 +68,7 @@ public class PanelGeneral extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				modelo.removeRow(tabla.getSelectedRow());
+				tabla.eliminarFila(tabla.getSelectedRow());
 				System.out.println("Eliminado el registro seleccionado");
 			}
 
@@ -118,16 +106,12 @@ public class PanelGeneral extends JPanel {
 						for (int fila = 0; fila < tabla.getRowCount(); fila = fila + 1) {
 							for (int columna = 0; columna < tabla.getColumnCount(); columna = columna + 1) {
 								if (tabla.getValueAt(fila, columna).equals(textoABuscar.getText())) {
-									tabla.setRowSelectionInterval(fila, fila);
-									System.out.println("hilo");
+									tabla.seleccionarFila(fila);
 									try {
-										synchronized (this) {
-											this.wait();
-										}
-									} catch (InterruptedException e) {
-										System.err.println("Error al esperar al hilo de busqueda: " + e.getMessage());
+										busqueda.interrupt();
+									} catch(Exception e) {
+										System.err.println("Error al esperar en el hilo: " + e.getMessage());
 									}
-									System.out.println("control");
 								}
 							}
 						}
@@ -138,4 +122,4 @@ public class PanelGeneral extends JPanel {
 		});
 		add(btnBuscar);
 	}
-}
+} 

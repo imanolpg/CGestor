@@ -3,16 +3,18 @@ package Main;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-@SuppressWarnings("serial")
+
 public class Tabla extends JTable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private DefaultTableModel modelo;
 	
@@ -20,9 +22,9 @@ public class Tabla extends JTable{
 	private String[][] datosTabla;
 	
 	public Tabla() {
-		setColumas(BD.getColumnasTabla());
-		setDatos(BD.getDatosTabla());
-		creaModelo();
+		this.setColumas(BD.getColumnasTabla());
+		this.setDatos(BD.getDatosTabla());
+		this.creaModelo();
 	}
 	
 	/**
@@ -69,6 +71,14 @@ public class Tabla extends JTable{
 	public void setColumas(String[] argColumnas) {
 		columnas = argColumnas;
 	}
+	
+	/**
+	 * Devuelve las columnas que hay en la tabla
+	 * @return String[] con los nombres de las columnas
+	 */
+	public String[] getColumnas() {
+		return(this.columnas);
+	}
 
 	/**
 	 * Inicia los datos de la tabla
@@ -102,5 +112,27 @@ public class Tabla extends JTable{
 		}
 	}
 	
-
+	/**
+	 * Añade una nueva fila a la tabla
+	 * @param nueva fila que se va a añadir
+	 */
+	public void aniadirFila(String[] filaNueva) {
+		this.modelo.addRow((Object[]) filaNueva);
+	}
+	
+	/**
+	 * Elimina una fila de la tabla
+	 * @param el número de la fila que hay que eliminar
+	 */
+	public void eliminarFila(int fila) {
+		this.modelo.removeRow(fila);
+	}
+	
+	/**
+	 * Selecciona una fila de la tabla
+	 * @param número de fila a seleccionar
+	 */
+	public void seleccionarFila(int fila) {
+		this.setRowSelectionInterval(fila, fila);
+	}
 }

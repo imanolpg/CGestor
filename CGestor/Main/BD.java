@@ -6,13 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import java.util.ArrayList;
 import java.util.logging.Level;
-
 import JPanels.PanelGeneral;
 import jxl.Sheet;
 import jxl.Workbook;
+
 /**
  * Clase que gestiona todas las interacciones con la base de datos
  * @author imanol
@@ -36,8 +35,6 @@ public class BD {
 	private static ArrayList<String[]> actualizaciones;
 	
 	public final static String pathBD = "jdbc:sqlite:privado/familias.db";
-	
-	private static String[] columnas;
 	
 	/**
 	 * Aniade una nueva actualizacion para guardarlo en la base de datos
@@ -64,17 +61,21 @@ public class BD {
 			conexion = DriverManager.getConnection(pathBD);
 			stmt = conexion.createStatement();
 			resultado = stmt.executeQuery("SELECT * FROM datos");
+			String[] columnas = getColumnasTabla();
 	        while (resultado.next()) {
-	        	// TODO corregir con las columnas correspondientes
-	        	String[] record = {
-	        			resultado.getString("id"),
-	        			resultado.getString("nombre"),
-	        			resultado.getString("participantes"),
-	        			resultado.getString("tallas"),
-	        			resultado.getString("telefono"),
-	        			resultado.getString("email"),
-	        			resultado.getString("pagado")
-	        	};
+	        	String[] record = new String[columnas.length];
+	        	for (int index=0; index<columnas.length; index=index+1) {
+	        		record[index] = resultado.getString(index);
+	        	}
+//	        	String[] record = {
+//	        			resultado.getString("id"),
+//	        			resultado.getString("nombre"),
+//	        			resultado.getString("participantes"),
+//	        			resultado.getString("tallas"),
+//	        			resultado.getString("telefono"),
+//	        			resultado.getString("email"),
+//	        			resultado.getString("pagado")
+//	        	};
 	        	datosTemporal.add(record);
 	        }
 	        Main.log.log(Level.INFO, "Base de datos leida correctamente");
@@ -82,7 +83,7 @@ public class BD {
 			conexion.close();
 		}catch (Exception e) {
 			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.err.println("Error al leer los datos de la base de datos: " + e.getMessage());
 		}
 		
 		String[][] datos = new String[datosTemporal.size()][BD.getColumnasTabla().length];
@@ -93,21 +94,35 @@ public class BD {
 	}
 
 	/**
-	 * Devuelve las columnas que va a llevar la tabla
+	 * Devuelve las columnas de la tabla de la base de datos
 	 * @return String[] de las columnas
 	 */
 	public static String[] getColumnasTabla(){
-		//String[] nombresColumnas = {"Numero de familia", "Nombre de la familia", "Participantes", "Tallas de los disfraces", "Telefono", "Email", "Pagado" };	
-		return(columnas);
+		
+		String[] columnas;
+		try {
+			Connection conexion = DriverManager.getConnection(pathBD);
+			Statement stmt = conexion.createStatement();
+			ResultSet resultado = stmt.executeQuery("SELECT sql FROM sqlite_master\n WHERE tbl_name = 'datos'");
+			columnas = resultado.getString(1).split(",");
+			for (int index=0; index<=columnas.length; index=index+1) {
+				columnas[index] = columnas[index].substring(columnas[index].indexOf("`") + 1, columnas[index].lastIndexOf("`"));
+			}
+			conexion.close();
+			return(columnas);
+		} catch (Exception e) {
+			System.err.println("Error al leer las columnas de la base de datos: " + e.getMessage());
+		}
+		return(null);
 	}
 	
-	/**
-	 * Guarda en la variable columnas las columnas de la base de datos
-	 * @param array list con los Strings de columnas
-	 */
-	public static void setColumnasTabla(ArrayList<String> arraylistColumnas) {
-		columnas = (String[]) arraylistColumnas.toArray();
-	}
+//	/**
+//	 * Guarda en la variable columnas las columnas de la base de datos
+//	 * @param array list con los Strings de columnas
+//	 */
+//	public static void setColumnasTabla(ArrayList<String> arraylistColumnas) {
+//		columnas = (String[]) arraylistColumnas.toArray();
+//	}
 
 	/** 
 	 * Hace updates a la base de datos con los cambios de actualizaciones
@@ -179,6 +194,7 @@ public class BD {
 	 * @param ruta del archivo
 	 */
 	public static void deXLSaBD(String rutaExcel) {
+		//TODO testear
 		File archivoXls;
 		Workbook workbook;
 		String[][] datosTabla;
@@ -242,5 +258,4 @@ public class BD {
 			System.err.println("Error al crear la base de datos: " + e.getMessage());
 		}
 	}
-}
 }
