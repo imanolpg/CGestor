@@ -25,6 +25,7 @@ public class Tabla extends JTable{
 		this.setColumas(BD.getColumnasTabla());
 		this.setDatos(BD.getDatosTabla());
 		this.creaModelo();
+		this.ajustarTamanioColumnas();
 	}
 	
 	/**
@@ -54,6 +55,7 @@ public class Tabla extends JTable{
 			public void propertyChange(PropertyChangeEvent evt) {
 				if ("tableCellEditor".equals(evt.getPropertyName())) {
 					ajustarTamanioColumnas();
+					actualizarDatosDeModelo();
 					//añadir actualizaciones de los datos cambiados BD.aniadirDatoActualizado() y descomentar la linea de BD.actualizar
 				}
 			}
@@ -134,5 +136,16 @@ public class Tabla extends JTable{
 	 */
 	public void seleccionarFila(int fila) {
 		this.setRowSelectionInterval(fila, fila);
+	}
+	
+	/**
+	 * Actualiza los datos del modelo de la tabla y los almacena en la variable datosTabla
+	 */
+	private void actualizarDatosDeModelo() {
+		for (int indexF=0; indexF<modelo.getRowCount(); indexF=indexF+1) {
+			for (int indexC=0; indexC<modelo.getColumnCount(); indexC=indexC+1) {
+				datosTabla[indexF][indexC] = (String) modelo.getValueAt(indexF, indexC);
+			}
+		}
 	}
 }

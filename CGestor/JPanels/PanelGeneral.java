@@ -32,8 +32,6 @@ public class PanelGeneral extends JPanel {
 		scrollPane.setBounds(74, 6, 747, 462);
 		add(scrollPane);
 		
-		//BD.iniciaBaseDeDatos();
-		
 		tabla = new Tabla();
 		scrollPane.setViewportView(tabla);
 

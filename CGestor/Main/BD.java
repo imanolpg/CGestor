@@ -34,7 +34,7 @@ public class BD {
 	// {"id familia", "campo a cambiar", "nuevo valor", "viejo valor"}
 	private static ArrayList<String[]> actualizaciones;
 	
-	public final static String pathBD = "jdbc:sqlite:privado/familias.db";
+	public final static String pathBD = "jdbc:sqlite:privado/familias1 copia.db";
 	
 	/**
 	 * Aniade una nueva actualizacion para guardarlo en la base de datos
@@ -65,17 +65,8 @@ public class BD {
 	        while (resultado.next()) {
 	        	String[] record = new String[columnas.length];
 	        	for (int index=0; index<columnas.length; index=index+1) {
-	        		record[index] = resultado.getString(index);
+	        		record[index] = resultado.getString(index+1);
 	        	}
-//	        	String[] record = {
-//	        			resultado.getString("id"),
-//	        			resultado.getString("nombre"),
-//	        			resultado.getString("participantes"),
-//	        			resultado.getString("tallas"),
-//	        			resultado.getString("telefono"),
-//	        			resultado.getString("email"),
-//	        			resultado.getString("pagado")
-//	        	};
 	        	datosTemporal.add(record);
 	        }
 	        Main.log.log(Level.INFO, "Base de datos leida correctamente");
@@ -105,7 +96,7 @@ public class BD {
 			Statement stmt = conexion.createStatement();
 			ResultSet resultado = stmt.executeQuery("SELECT sql FROM sqlite_master\n WHERE tbl_name = 'datos'");
 			columnas = resultado.getString(1).split(",");
-			for (int index=0; index<=columnas.length; index=index+1) {
+			for (int index=0; index<columnas.length; index=index+1) {
 				columnas[index] = columnas[index].substring(columnas[index].indexOf("`") + 1, columnas[index].lastIndexOf("`"));
 			}
 			conexion.close();
@@ -134,17 +125,29 @@ public class BD {
 		    	Statement stmt = conexion.createStatement();
 		    	stmt.executeUpdate("DELETE FROM datos");
 		    	stmt.close();
-		    	PreparedStatement pstmt = conexion.prepareStatement("INSERT INTO datos (id, nombre, participantes, tallas, telefono, email, pagado) VALUES (?,?,?,?,?,?,?);");
+		    	//Construyo el comando sqlite 
+		    	String statement = "INSERT INTO datos (";
+		    	String[] columnas  = PanelGeneral.tabla.getColumnas();
+		    	for (String columna : columnas) {
+		    		statement = statement + columna + ",";
+		    	}
+		    	statement = statement.substring(0, statement.length()-1);
+		    	statement = statement + ") VALUES (";
+		    	for (String columna : columnas) {
+		    		statement = statement + "?" + ",";
+		    	}
+		    	statement = statement.substring(0, statement.length()-1);
+		    	statement = statement + ")";
+		    	System.out.println("Statement: " + statement);
+		    	//preparo el statement para guardar en la base de datos
+		    	PreparedStatement pstmt = conexion.prepareStatement(statement);
 		    	for (String[] familia : PanelGeneral.tabla.getDatos()) {
 		    		//TODO cambiar para que se haga con todas las columnas
-		    		pstmt.setString(1, familia[BD.ID]);
-		    		pstmt.setString(2, familia[BD.NOMBRE_FAMILIA]);
-		    		pstmt.setString(3, familia[BD.PARTICIPANTES]);
-		    		pstmt.setString(4, familia[BD.TALLAS]);
-		    		pstmt.setString(5, familia[BD.TELEFONO]);
-		    		pstmt.setString(6, familia[BD.CORREO]);
-		    		pstmt.setString(7, familia[BD.PAGADO]);
-		    		pstmt.executeUpdate();
+		    		for(int index=0; index<columnas.length; index=index+1) {
+		    			System.out.println(index + "\t" + familia[index]);
+		    			pstmt.setString(index + 1, familia[index]);
+		    		}
+		    		pstmt.executeUpdate(); //FIXME
 		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
 		    	//logearCadaCambio(); TODO descomentar cuando se añadan en actualizaciones cada valor cambiado
@@ -157,14 +160,14 @@ public class BD {
 	        }
 	}
 	
-	/**
-	 * Escribe un log de cada cambio que se ha hecho a la base de datos
-	 */
-	private static void logearCadaCambio() {
-		for (String[] datos : actualizaciones) {
-			Main.log.log(Level.INFO, "Cambiado(" + datos[0] + "," + datos[1] + "," + datos[2] + "," + datos[3] + ")");
-		}
-	}
+//	/**
+//	 * Escribe un log de cada cambio que se ha hecho a la base de datos
+//	 */
+//	private static void logearCadaCambio() {
+//		for (String[] datos : actualizaciones) {
+//			Main.log.log(Level.INFO, "Cambiado(" + datos[0] + "," + datos[1] + "," + datos[2] + "," + datos[3] + ")");
+//		}
+//	}
 	
 	/**
 	 * Devuelve 
