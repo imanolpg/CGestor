@@ -56,7 +56,16 @@ public class PanelEmail extends JPanel {
 		add(aComparar);
 
 		JEditorPane cuerpoEmail = new JEditorPane();
-
+		cuerpoEmail.setText("ID: <<id>>\n" + 
+				"NOMBRE: <<nombre>>\n" + 
+				"PARTICIPANTES: <<participantes>>\n" + 
+				"TALLAS: <<tallas>>\n" + 
+				"TELEFONO: <<telefono>>\n" + 
+				"EMAIL: <<email>>\n" + 
+				"PAGADO: <<pagado>>\n" + 
+				"FIELD8: <<Field8>>\n" + 
+				"FIELD9: <<Field9>>\n" + 
+				"ASDSF: <<asdsf>>");
 		JScrollPane scrollPane = new JScrollPane(cuerpoEmail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(84, 122, 399, 336);
@@ -78,7 +87,6 @@ public class PanelEmail extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				btnEnviar.setText("Enviando mensaje..."); //no funciona
 				System.out.println("Boton \"Enviar\" pulsado");
-				System.out.println(familiasDestinatarias.size());
 				for (String[] destinatario : familiasDestinatarias) {
 					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
@@ -97,7 +105,7 @@ public class PanelEmail extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Seleccionar\" pulsado");
 				list.removeAll();
-				eliminarFamiliasDestinatarias();
+				familiasDestinatarias.clear();
 				String[] listaDestinatarios = Main.getDestinatarios(opcionColumnas.getSelectedIndex(), aComparar.getText(),
 						comparador.getSelectedItem());
 				for (String destinatario : listaDestinatarios) {
@@ -156,8 +164,11 @@ public class PanelEmail extends JPanel {
 	 * @return el correo personalizado
 	 */
 	private static String reestructuraEmail(String correo, String[] datos) {
-		for (int index=0; index<choiceAniadir.getItemCount(); index=index+1)
-			correo = correo.replace("<<"+ choiceAniadir.getItem(index) + ">>", datos[index]);
+		for (int index=0; index<choiceAniadir.getItemCount(); index=index+1) {
+			if (datos[index] == null)
+				datos[index] = "";
+			correo = correo.replace("<<" + choiceAniadir.getItem(index) + ">>", datos[index]);
+		}
 		return (correo);
 	}
 
@@ -167,12 +178,5 @@ public class PanelEmail extends JPanel {
 	 */
 	public static void aniadirFamiliaDestinataria(String[] familia) {
 		familiasDestinatarias.add(familia);
-	}
-
-	/**
-	 * Elimina todos los datos de la lista de familias destinatarios
-	 */
-	public static void eliminarFamiliasDestinatarias() {
-		familiasDestinatarias = new ArrayList<String[]>();
 	}
 }
