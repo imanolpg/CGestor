@@ -39,6 +39,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		log = Logger.getLogger("logger"); // creo el Logger
+		l
 		try {
 			log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {

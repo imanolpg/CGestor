@@ -22,6 +22,7 @@ public class Tabla extends JTable{
 	private String[][] datosTabla;
 	
 	public Tabla() {
+		BD.cargarTabla();
 		this.setColumas(BD.getColumnasTabla());
 		this.setDatos(BD.getDatosTabla());
 		this.creaModelo();
@@ -56,7 +57,6 @@ public class Tabla extends JTable{
 				if ("tableCellEditor".equals(evt.getPropertyName())) {
 					ajustarTamanioColumnas();
 					actualizarDatosDeModelo();
-					//añadir actualizaciones de los datos cambiados BD.aniadirDatoActualizado() y descomentar la linea de BD.actualizar
 				}
 			}
 		});

@@ -4,6 +4,8 @@ import javax.swing.JPasswordField;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,9 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Main.BD;
 import Main.Main;
-
 import javax.swing.JButton;
-
 import jxl.Sheet;
 import jxl.Workbook;
 
@@ -95,6 +95,20 @@ public class PanelConfiguracion extends JPanel {
 		rutaExcel.setBounds(418, 275, 256, 33);
 		add(rutaExcel);
 		rutaExcel.setColumns(10);
+		
+		rutaExcel.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				BD.pathBD = "jdbc:sqlite:privado/" + rutaExcel.getText();
+				BD.cargarTabla();		
+			}
+			
+		});
 		
 		cargarCredenciales();
 	}

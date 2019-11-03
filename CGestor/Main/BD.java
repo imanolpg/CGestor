@@ -19,38 +19,14 @@ import jxl.Workbook;
  */
 public class BD {
 	
-	public static final int NUMERO_FAMILIA = 0;
-	public static final int NOMBRE_FAMILIA = 1;
-	public static final int PARTICIPANTES = 2;
-	public static final int TALLAS = 3;
-	public static final int TELEFONO = 4;
-	public static final int CORREO = 5;
-	public static final int PAGADO = 6;
-	
-	public static final int ID = 0;
-	public static final int CAMPO = 1;
-	public static final int VALOR = 2;
+	public static String pathBD = "jdbc:sqlite:privado/familias1 copia.db";
+	private static String[][] datosBD;
+	private static String[] columnasBD;
 
-	// {"id familia", "campo a cambiar", "nuevo valor", "viejo valor"}
-	private static ArrayList<String[]> actualizaciones;
-	
-	public final static String pathBD = "jdbc:sqlite:privado/familias1 copia.db";
-	
 	/**
-	 * Aniade una nueva actualizacion para guardarlo en la base de datos
-	 * @param id localizador de la familia
-	 * @param campo que queremos cambiar
-	 * @param valor nuevo valor del campo
+	 * Lee la base de datos y guarda los valores en las variables String[][] datosBD y String[] columnasBD
 	 */
-	public static void aniadirActualizacion(String id, String campo, String valorNuevo, String valorViejo) {
-		actualizaciones.add(new String[] {id, campo, valorNuevo, valorViejo});
-	}
-	
-	/** 
-	 * Ordena los datos para mostrarlos en la tabla
-	 * @return Object[][] de los datos
-	 */
-	public static String[][] getDatosTabla(){
+	public static void cargarTabla() {
 		Connection conexion;
 		Statement stmt;
 		ResultSet resultado;
@@ -60,60 +36,50 @@ public class BD {
 			Class.forName("org.sqlite.JDBC");
 			conexion = DriverManager.getConnection(pathBD);
 			stmt = conexion.createStatement();
+			resultado = stmt.executeQuery("SELECT sql FROM sqlite_master\n WHERE tbl_name = 'datos'");
+			columnasBD = resultado.getString(1).split(",");
+			for (int index=0; index<columnasBD.length; index=index+1) 
+				columnasBD[index] = columnasBD[index].substring(columnasBD[index].indexOf("`") + 1, columnasBD[index].lastIndexOf("`"));
 			resultado = stmt.executeQuery("SELECT * FROM datos");
-			String[] columnas = getColumnasTabla();
+			//columnasBD = getColumnasTabla();
 	        while (resultado.next()) {
-	        	String[] record = new String[columnas.length];
-	        	for (int index=0; index<columnas.length; index=index+1) {
+	        	String[] record = new String[columnasBD.length];
+	        	for (int index=0; index<columnasBD.length; index=index+1) {
 	        		record[index] = resultado.getString(index+1);
 	        	}
 	        	datosTemporal.add(record);
 	        }
+			datosBD = new String[datosTemporal.size()][BD.getColumnasTabla().length];
+			for (int x=0; x<datosTemporal.size(); x++)
+				datosBD[x] = datosTemporal.get(x);
+			
 	        Main.log.log(Level.INFO, "Base de datos leida correctamente");
 			stmt.close();
 			conexion.close();
+			
+			PanelGeneral.tabla.setDatos(datosBD);
+			PanelGeneral.tabla.setColumas(columnasBD);	
+			
 		}catch (Exception e) {
 			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
 			System.err.println("Error al leer los datos de la base de datos: " + e.getMessage());
 		}
-		
-		String[][] datos = new String[datosTemporal.size()][BD.getColumnasTabla().length];
-		for (int x=0; x<datosTemporal.size(); x++)
-			datos[x] = datosTemporal.get(x);
-
-		return (datos);
+	}
+	/** 
+	 * Devuelve los datos de la base de datos
+	 * @return String[][] de los datos
+	 */
+	public static String[][] getDatosTabla(){
+		return(datosBD);
 	}
 
 	/**
 	 * Devuelve las columnas de la tabla de la base de datos
 	 * @return String[] de las columnas
 	 */
-	public static String[] getColumnasTabla(){
-		
-		String[] columnas;
-		try {
-			Connection conexion = DriverManager.getConnection(pathBD);
-			Statement stmt = conexion.createStatement();
-			ResultSet resultado = stmt.executeQuery("SELECT sql FROM sqlite_master\n WHERE tbl_name = 'datos'");
-			columnas = resultado.getString(1).split(",");
-			for (int index=0; index<columnas.length; index=index+1) {
-				columnas[index] = columnas[index].substring(columnas[index].indexOf("`") + 1, columnas[index].lastIndexOf("`"));
-			}
-			conexion.close();
-			return(columnas);
-		} catch (Exception e) {
-			System.err.println("Error al leer las columnas de la base de datos: " + e.getMessage());
-		}
-		return(null);
+	public static String[] getColumnasTabla(){		
+		return(columnasBD);
 	}
-	
-//	/**
-//	 * Guarda en la variable columnas las columnas de la base de datos
-//	 * @param array list con los Strings de columnas
-//	 */
-//	public static void setColumnasTabla(ArrayList<String> arraylistColumnas) {
-//		columnas = (String[]) arraylistColumnas.toArray();
-//	}
 
 	/** 
 	 * Hace updates a la base de datos con los cambios de actualizaciones
@@ -140,31 +106,23 @@ public class BD {
 		    	//preparo el statement para guardar en la base de datos
 		    	PreparedStatement pstmt = conexion.prepareStatement(statement);
 		    	for (String[] familia : PanelGeneral.tabla.getDatos()) {
-		    		//TODO cambiar para que se haga con todas las columnas
 		    		for(int index=0; index<columnas.length; index=index+1) {
 		    			pstmt.setString(index + 1, familia[index]);
 		    		}
 		    		pstmt.executeUpdate();
 		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
-		    	//logearCadaCambio(); TODO descomentar cuando se añadan en actualizaciones cada valor cambiado
 		    	Main.log.log(Level.INFO, "Base de datos actualizada");
 		    	pstmt.close();
 		    	conexion.close();
+		    	
+		    	cargarTabla();
+		    	
 	        }catch (SQLException e) {
 	        	Main.log.log(Level.WARNING, "La base de datos no se ha podido actualizar");
 	            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
 	        }
 	}
-	
-//	/**
-//	 * Escribe un log de cada cambio que se ha hecho a la base de datos
-//	 */
-//	private static void logearCadaCambio() {
-//		for (String[] datos : actualizaciones) {
-//			Main.log.log(Level.INFO, "Cambiado(" + datos[0] + "," + datos[1] + "," + datos[2] + "," + datos[3] + ")");
-//		}
-//	}
 	
 	/**
 	 * Devuelve 
@@ -200,7 +158,6 @@ public class BD {
 		String[][] datosTabla;
 		Connection conexion;
 		Statement stmt;
-		PreparedStatement pstmt;
 		String comando;
 		ArrayList<String> filas;
 		ArrayList<String[]> datos;
@@ -239,7 +196,6 @@ public class BD {
 			}
 			comando = comando + ")";
 			
-			pstmt = conexion.prepareStatement(comando);
 			filas.clear();
 			for (int fila = 1; fila <= hoja.getRows(); fila = fila + 1) {
 				for (int columna = 0; columna <= hoja.getColumns(); columna = columna + 1) {

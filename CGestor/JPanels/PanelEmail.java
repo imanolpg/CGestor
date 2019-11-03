@@ -10,11 +10,10 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
-
-import Main.BD;
 import Main.Main;
 
 public class PanelEmail extends JPanel {
@@ -90,7 +89,7 @@ public class PanelEmail extends JPanel {
 				for (String[] destinatario : familiasDestinatarias) {
 					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
-					Main.enviarEmail(asunto, correo, destinatario[BD.CORREO]);
+					Main.enviarEmail(asunto, correo, destinatario[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("correo")]);
 				}
 				btnEnviar.setText("Enviar");
 			}
