@@ -57,8 +57,9 @@ public class BD {
 			stmt.close();
 			conexion.close();
 			
+			//FIXME
 			PanelGeneral.tabla.setDatos(datosBD);
-			PanelGeneral.tabla.setColumas(columnasBD);	
+			PanelGeneral.tabla.setColumas(columnasBD);
 			
 		}catch (Exception e) {
 			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");

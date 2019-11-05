@@ -33,6 +33,7 @@ public class PanelGeneral extends JPanel {
 		add(scrollPane);
 		
 		tabla = new Tabla();
+		tabla.init();
 		scrollPane.setViewportView(tabla);
 
 		JButton btnActualizar = new JButton("Actualizar");

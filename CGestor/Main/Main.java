@@ -39,7 +39,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		log = Logger.getLogger("logger"); // creo el Logger
-		l
+		
 		try {
 			log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {
@@ -119,12 +119,9 @@ public class Main {
 				PanelEmail.aniadirFamiliaDestinataria(fila);
 			}
 		}
-		for (String g : listaDestinatarios)
-			System.out.println(g);
 		String[] aDevolver = new String[listaDestinatarios.size()];
 		for (int x=0; x<listaDestinatarios.size(); x++) {
 			aDevolver[x] = listaDestinatarios.get(x);
-			System.out.println(listaDestinatarios.get(x));
 		}
 		return (aDevolver);
 	}

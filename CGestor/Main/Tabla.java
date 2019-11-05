@@ -22,9 +22,14 @@ public class Tabla extends JTable{
 	private String[][] datosTabla;
 	
 	public Tabla() {
+
+	}
+	
+	/**
+	 * Inicializa la tabla
+	 */
+	public void init() {
 		BD.cargarTabla();
-		this.setColumas(BD.getColumnasTabla());
-		this.setDatos(BD.getDatosTabla());
 		this.creaModelo();
 		this.ajustarTamanioColumnas();
 	}
@@ -87,7 +92,7 @@ public class Tabla extends JTable{
 	 * @param datos de la tabla
 	 */
 	public void setDatos(String[][] argDatosTabla){
-		datosTabla = argDatosTabla;
+		this.datosTabla = argDatosTabla;
 	}
 
 	/**

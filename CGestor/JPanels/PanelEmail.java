@@ -89,7 +89,7 @@ public class PanelEmail extends JPanel {
 				for (String[] destinatario : familiasDestinatarias) {
 					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
-					Main.enviarEmail(asunto, correo, destinatario[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("correo")]);
+					Main.enviarEmail(asunto, correo, destinatario[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
 				}
 				btnEnviar.setText("Enviar");
 			}
