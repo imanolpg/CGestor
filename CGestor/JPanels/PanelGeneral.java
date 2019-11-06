@@ -73,7 +73,7 @@ public class PanelGeneral extends JPanel {
 
 		});
 		add(btnEliminar);
-
+/*
 		textoABuscar = new JTextField();
 		textoABuscar.setBounds(843, 64, 139, 26);
 		add(textoABuscar);
@@ -120,5 +120,6 @@ public class PanelGeneral extends JPanel {
 			}
 		});
 		add(btnBuscar);
+*/
 	}
 } 

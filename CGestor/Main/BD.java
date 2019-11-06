@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
-
 import JPanels.PanelConfiguracion;
 import JPanels.PanelGeneral;
 
@@ -20,7 +19,7 @@ import JPanels.PanelGeneral;
  */
 public class BD {
 	
-	public static String pathBD = "privado/prueba.db";
+	public static String pathBD = PanelConfiguracion.getRutaBD();
 	private static String[][] datosBD;
 	private static String[] columnasBD;
 
@@ -38,9 +37,10 @@ public class BD {
 			conexion = DriverManager.getConnection(pathBD);
 			stmt = conexion.createStatement();
 			resultado = stmt.executeQuery("SELECT sql FROM sqlite_master\n WHERE tbl_name = 'datos'");
-			columnasBD = resultado.getString(1).split(",");
+			//System.out.println("Columnas: " + resultado.getString(1));
+			columnasBD = resultado.getString(1).replaceAll("`", "'").split(",");
 			for (int index=0; index<columnasBD.length; index=index+1) 
-				columnasBD[index] = columnasBD[index].substring(columnasBD[index].indexOf("`") + 1, columnasBD[index].lastIndexOf("`"));
+				columnasBD[index] = columnasBD[index].substring(columnasBD[index].indexOf("'") + 1, columnasBD[index].lastIndexOf("'"));
 			resultado = stmt.executeQuery("SELECT * FROM datos");
 			//columnasBD = getColumnasTabla();
 	        while (resultado.next()) {
@@ -55,11 +55,13 @@ public class BD {
 				datosBD[x] = datosTemporal.get(x);
 			
 	        Main.log.log(Level.INFO, "Base de datos leida correctamente");
-			stmt.close();
+			//stmt.close();
 			conexion.close();
 			
 			PanelGeneral.tabla.setDatos(datosBD);
 			PanelGeneral.tabla.setColumas(columnasBD);
+			if (PanelGeneral.tabla.tablaInicializada)
+				PanelGeneral.tabla.creaModelo();
 			
 		}catch (Exception e) {
 			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
@@ -114,7 +116,7 @@ public class BD {
 		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
 		    	Main.log.log(Level.INFO, "Base de datos actualizada");
-		    	pstmt.close();
+		    	//pstmt.close();
 		    	conexion.close();
 		    	
 		    	cargarTabla();
@@ -149,7 +151,7 @@ public class BD {
 		return(new String[]{"1","2"});
 	}
 	
-	/** Pasa el archivo .xls a una base de datos
+	/** Pasa el archivo .csv a una base de datos
 	 * @param ruta del archivo
 	 */
 	public static void deCsvABd(String rutaCsv) {
@@ -157,8 +159,8 @@ public class BD {
 		final String regex = ";";
 		String comando = "";
 		try {
-			//Class.forName("org.sqlite.JDBC");
-			Connection conexion = DriverManager.getConnection("jdbc:sqlite:privado/prueba.db");
+			Class.forName("org.sqlite.JDBC");
+			Connection conexion = DriverManager.getConnection("jdbc:sqlite:privado/" + rutaCsv.split("/")[1].substring(0, rutaCsv.split("/")[1].lastIndexOf(".")) + ".db");
 			Statement stmt = conexion.createStatement();
 			@SuppressWarnings("resource")
 			BufferedReader bf = new BufferedReader(new FileReader(rutaCsv));
@@ -169,7 +171,6 @@ public class BD {
 			}
 			comando = comando.substring(0, comando.length() - 2);
 			comando = comando + ");";
-			System.out.println(comando);
 			stmt.executeUpdate(comando);
 			
 			while((linea = bf.readLine()) != null) {

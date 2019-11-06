@@ -4,8 +4,6 @@ import javax.swing.JPasswordField;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintStream;
@@ -30,7 +28,8 @@ public class PanelConfiguracion extends JPanel {
 	private static JPasswordField clave;
 	
 	private static final String pathCredenciales = "privado/credenciales.txt"; 
-	private static JTextField rutaExcel;
+	private static JTextField rutaBaseDeDatos;
+	private JTextField rutaCSV;
 
 	/**
 	 * Create the panel.
@@ -65,39 +64,51 @@ public class PanelConfiguracion extends JPanel {
 		clave.setColumns(10);
 
 		JButton btnGuardar = new JButton("Guardar");
-		btnGuardar.setBounds(438, 376, 117, 33);
+		btnGuardar.setBounds(438, 429, 117, 33);
 		btnGuardar.addActionListener(new ActionListener() {
 
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				guardarCredenciales(email.getText(), clave.getText());
+				BD.pathBD = "jdbc:sqlite:privado/" + rutaBaseDeDatos.getText();
+				BD.cargarTabla();
 				System.out.println("Credenciales guardadas");
 			}
 
 		});
 		add(btnGuardar);
 		
-		JLabel lblArchivoExcell = new JLabel("Nombre archivo excel");
-		lblArchivoExcell.setBounds(124, 282, 175, 24);
+		JLabel lblArchivoExcell = new JLabel("Nombre de la base de datos");
+		lblArchivoExcell.setBounds(124, 282, 249, 24);
 		lblArchivoExcell.setFont(new Font(lblArchivoExcell.getFont().getName(), Font.PLAIN, 15));
 		add(lblArchivoExcell);
 		
-		rutaExcel = new JTextField();
-		rutaExcel.setBounds(418, 275, 256, 33);
-		add(rutaExcel);
-		rutaExcel.setColumns(10);
+		rutaBaseDeDatos = new JTextField();
+		rutaBaseDeDatos.setBounds(418, 275, 256, 33);
+		add(rutaBaseDeDatos);
+		rutaBaseDeDatos.setColumns(10);
+		rutaBaseDeDatos.setText("x.db");
 		
-		rutaExcel.addFocusListener(new FocusListener() {
+		JLabel lblRutaArchivoCsv = new JLabel("Ruta archivo CSV");
+		lblRutaArchivoCsv.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		lblRutaArchivoCsv.setBounds(124, 339, 197, 33);
+		add(lblRutaArchivoCsv);
+		
+		rutaCSV = new JTextField();
+		rutaCSV.setBounds(418, 339, 256, 29);
+		add(rutaCSV);
+		rutaCSV.setColumns(10);
+		
+		
+		JButton btnConvertir = new JButton("Convertir");
+		btnConvertir.setBounds(694, 345, 117, 24);
+		add(btnConvertir);
+		btnConvertir.addActionListener(new ActionListener() {
 
 			@Override
-			public void focusGained(FocusEvent e) {
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				BD.pathBD = "jdbc:sqlite:privado/" + rutaExcel.getText();
-				BD.cargarTabla();		
+			public void actionPerformed(ActionEvent e) {
+				BD.deCsvABd("privado/" + rutaCSV.getText());			
 			}
 			
 		});
@@ -227,6 +238,6 @@ public class PanelConfiguracion extends JPanel {
 	}
 	
 	public static String getRutaBD() {
-		return("privado/" + rutaExcel.getText());
+		return("jdbc:sqlite:privado/" + rutaBaseDeDatos.getText());
 	}
 }

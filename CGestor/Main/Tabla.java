@@ -8,6 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
+import JPanels.PanelEmail;
+
 
 public class Tabla extends JTable{
 
@@ -21,6 +23,8 @@ public class Tabla extends JTable{
 	private String[] columnas;
 	private String[][] datosTabla;
 	
+	public Boolean tablaInicializada = false;
+	
 	public Tabla() {
 
 	}
@@ -32,12 +36,13 @@ public class Tabla extends JTable{
 		BD.cargarTabla();
 		this.creaModelo();
 		this.ajustarTamanioColumnas();
+		tablaInicializada = true;
 	}
 	
 	/**
 	 * Crea el modelo en el cual se basa la tabla
 	 */
-	private void creaModelo() {
+	public void creaModelo() {
 		modelo = new DefaultTableModel();
 		for (String columna : columnas)
 			modelo.addColumn(columna);
@@ -69,6 +74,13 @@ public class Tabla extends JTable{
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		ajustarTamanioColumnas();
 		this.setFillsViewportHeight(true);
+		
+		try {
+			PanelEmail.actualizaChoiceAniadir();
+			PanelEmail.actualizaChoiceColumnas();
+		} catch (Exception e) {
+			System.out.println("No se ha podido actualizar las choice: " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -76,7 +88,7 @@ public class Tabla extends JTable{
 	 * @param columnas de la tabla
 	 */
 	public void setColumas(String[] argColumnas) {
-		columnas = argColumnas;
+		this.columnas = argColumnas;
 	}
 	
 	/**
@@ -146,7 +158,7 @@ public class Tabla extends JTable{
 	/**
 	 * Actualiza los datos del modelo de la tabla y los almacena en la variable datosTabla
 	 */
-	private void actualizarDatosDeModelo() {
+	public void actualizarDatosDeModelo() {
 		for (int indexF=0; indexF<modelo.getRowCount(); indexF=indexF+1) {
 			for (int indexC=0; indexC<modelo.getColumnCount(); indexC=indexC+1) {
 				datosTabla[indexF][indexC] = (String) modelo.getValueAt(indexF, indexC);

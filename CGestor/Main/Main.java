@@ -40,8 +40,6 @@ public class Main {
 	public static void main(String[] args) {
 		log = Logger.getLogger("logger"); // creo el Logger
 		
-		BD.deCsvABd("privado/x.csv");
-		
 		try {
 			log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {

@@ -25,6 +25,8 @@ public class PanelEmail extends JPanel {
 	private static JTextField asuntoEmail;
 	private static ArrayList<String[]> familiasDestinatarias = new ArrayList<String[]>();
 	private static Choice choiceAniadir;
+	private static Choice opcionColumnas;
+	
 
 	/**
 	 * Create the panel.
@@ -37,7 +39,7 @@ public class PanelEmail extends JPanel {
 		label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 20));
 		add(label);
 
-		Choice opcionColumnas = new Choice();
+		opcionColumnas = new Choice();
 		opcionColumnas.setBounds(553, 76, 130, 36);
 		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())
 			opcionColumnas.add(nuevaOpcion);
@@ -177,5 +179,17 @@ public class PanelEmail extends JPanel {
 	 */
 	public static void aniadirFamiliaDestinataria(String[] familia) {
 		familiasDestinatarias.add(familia);
+	}
+	
+	public static void actualizaChoiceAniadir() {
+		choiceAniadir.removeAll();
+		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())
+			choiceAniadir.add(nuevaOpcion);
+	}
+	
+	public static void actualizaChoiceColumnas() {
+		opcionColumnas.removeAll();
+		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())
+			opcionColumnas.add(nuevaOpcion);
 	}
 }
