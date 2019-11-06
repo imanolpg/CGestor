@@ -40,14 +40,16 @@ public class Main {
 	public static void main(String[] args) {
 		log = Logger.getLogger("logger"); // creo el Logger
 		
+		BD.deCsvABd("privado/x.csv");
+		
 		try {
 			log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {
 			System.err.println("Error al crear el handler: " + e.getMessage());
 		}
+		panelConfiguracion = new PanelConfiguracion(); //creo el panel de configuracion
 		panelGeneral = new PanelGeneral(); //creo el panel general
 		panelEmail = new PanelEmail(); //creo el panel email
-		panelConfiguracion = new PanelConfiguracion(); //creo el panel de configuracion
 		createWindow();
 	}
 

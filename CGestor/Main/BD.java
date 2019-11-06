@@ -1,5 +1,6 @@
 package Main;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,9 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
+
+import JPanels.PanelConfiguracion;
 import JPanels.PanelGeneral;
-import jxl.Sheet;
-import jxl.Workbook;
 
 /**
  * Clase que gestiona todas las interacciones con la base de datos
@@ -19,7 +20,7 @@ import jxl.Workbook;
  */
 public class BD {
 	
-	public static String pathBD = "jdbc:sqlite:privado/familias1 copia.db";
+	public static String pathBD = "privado/prueba.db";
 	private static String[][] datosBD;
 	private static String[] columnasBD;
 
@@ -57,7 +58,6 @@ public class BD {
 			stmt.close();
 			conexion.close();
 			
-			//FIXME
 			PanelGeneral.tabla.setDatos(datosBD);
 			PanelGeneral.tabla.setColumas(columnasBD);
 			
@@ -152,64 +152,37 @@ public class BD {
 	/** Pasa el archivo .xls a una base de datos
 	 * @param ruta del archivo
 	 */
-	public static void deXLSaBD(String rutaExcel) {
-		//TODO testear
-		File archivoXls;
-		Workbook workbook;
-		String[][] datosTabla;
-		Connection conexion;
-		Statement stmt;
-		String comando;
-		ArrayList<String> filas;
-		ArrayList<String[]> datos;
+	public static void deCsvABd(String rutaCsv) {
+		String linea;
+		final String regex = ";";
+		String comando = "";
 		try {
-			archivoXls = new File(rutaExcel);
-			workbook = Workbook.getWorkbook(archivoXls);
-			Sheet hoja = workbook.getSheet(0);
-			filas = new ArrayList<String>();
-			datos = new ArrayList<String[]>();
-			conexion = DriverManager.getConnection(pathBD);
-			stmt = conexion.createStatement();
-			comando = "CREATE TABLE BaseDeDatos.datos(";
-			for (int columna = 0; columna <= hoja.getColumns(); columna = columna + 1) {
-				filas.add(hoja.getCell(0, columna).getContents());
-				comando = comando + hoja.getCell(0, columna).getContents() + "string, ";
-			}
-			if (comando.contains("string, ")){
-				comando = comando.substring(0, comando.length() - ("string, ").length());
-			}
-			stmt.execute(comando);
-			stmt.close();
-			//PanelGeneral.tabla.setColumas((String[]) filas.toArray());
-			comando = "INSERT INTO datos (";
-			for (String columna : filas) {
-				comando = comando + columna + ", ";
-			}
-			if (comando.contains(", ")){
-				comando = comando.substring(0, comando.length() - (", ").length());
-			}
-			comando = comando + ") VALUES (";
-			for (int x=0; x<filas.size(); x = x + 1) {
-				comando = comando + "?, ";
-			}
-			if (comando.contains(", ")){
-				comando = comando.substring(0, comando.length() - (", ").length());
-			}
-			comando = comando + ")";
+			//Class.forName("org.sqlite.JDBC");
+			Connection conexion = DriverManager.getConnection("jdbc:sqlite:privado/prueba.db");
+			Statement stmt = conexion.createStatement();
+			@SuppressWarnings("resource")
+			BufferedReader bf = new BufferedReader(new FileReader(rutaCsv));
 			
-			filas.clear();
-			for (int fila = 1; fila <= hoja.getRows(); fila = fila + 1) {
-				for (int columna = 0; columna <= hoja.getColumns(); columna = columna + 1) {
-					filas.add(hoja.getCell(fila, columna).getContents());
-				}
-				datos.add((String[]) filas.toArray());
+			comando = "CREATE TABLE IF NOT EXISTS datos(";
+			for (String columna :  bf.readLine().split(regex)) {
+				comando = comando + "'" +  columna + "'" + ", ";
 			}
-			datosTabla = new String[filas.size()][datos.size()];
-			for (int fila=0; fila<datos.size(); fila = fila + 1){
-				for(int celda=0; celda<filas.size(); celda = celda + 1){
-					datosTabla[fila][celda] = datos.get(fila)[celda];
+			comando = comando.substring(0, comando.length() - 2);
+			comando = comando + ");";
+			System.out.println(comando);
+			stmt.executeUpdate(comando);
+			
+			while((linea = bf.readLine()) != null) {
+				comando = "INSERT INTO datos VALUES(";
+				for (String dato : linea.split(regex)) {
+				comando = comando  + "'" + dato + "'" + ", ";
 				}
+				comando = comando.substring(0, comando.length() - 2);
+				comando = comando + ");";
+				stmt.executeUpdate(comando);
 			}
+			stmt.close();
+			conexion.close();
 			
 		} catch (Exception e) {
 			System.err.println("Error al crear la base de datos: " + e.getMessage());

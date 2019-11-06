@@ -7,14 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,8 +17,6 @@ import javax.swing.JTextField;
 import Main.BD;
 import Main.Main;
 import javax.swing.JButton;
-import jxl.Sheet;
-import jxl.Workbook;
 
 public class PanelConfiguracion extends JPanel {
 	/**
@@ -234,59 +226,7 @@ public class PanelConfiguracion extends JPanel {
 		return textoEncriptado;
 	}
 	
-	/**
-	 * Pasa el archivo .xls a una base de datos
-	 * @param ruta del archivo
-	 */
-	public static void deXLSaBD(String ruta) {
-		File archivoXls = new File(rutaExcel.getText());
-		try {
-			Workbook workbook = Workbook.getWorkbook(archivoXls);
-			Sheet hoja = workbook.getSheet(0);
-			ArrayList<ArrayList<String>> filas = new ArrayList<ArrayList<String>>();
-			ArrayList<String> columnas = new ArrayList<String>();
-	    	String statement = "INSERT INTO tabla (";
-			for (int columna = 0; columna <= hoja.getColumns(); columna = columna + 1) {
-				columnas.add(hoja.getCell(0, columna).getContents());
-				statement = statement + hoja.getCell(0, columna).getContents() + ", ";
-			}
-			if (statement.contains(", "))
-				statement = statement.substring(0, statement.length() - 2);
-			statement = statement + ") VALUES (";
-			for (int x=0; x<filas.size(); x = x+1) {
-				statement = statement + "?,";
-			}
-			statement = statement.substring(0, statement.length() - 1);
-			statement = statement + ");";
-			System.out.println("Statement: " + statement);
-			//BD.setColumnasTabla(columnas);
-			filas.clear();
-			for (int fila=1; fila<hoja.getRows(); fila=fila+1) {
-				for (int columna = 0; columna <hoja.getColumns(); columna = columna + 1) {
-					columnas.add(hoja.getCell(fila, columna).getContents());
-				}
-				filas.add(columnas);
-			}
-			
-			Connection conexion = DriverManager.getConnection(BD.pathBD);
-	    	Statement stmt = conexion.createStatement();
-	    	stmt.executeUpdate("DELETE FROM tabla");
-	    	stmt.close();
-	    	PreparedStatement pstmt = conexion.prepareStatement(statement);
-	    	for (ArrayList<String> columna : filas) {
-	    		int x = 1;
-	    		for (String celda : columna) {
-	    			pstmt.setString(x, celda);
-	    			x = x + 1;
-	    		}
-	    		pstmt.executeUpdate();
-			}
-	    	Main.log.log(Level.INFO, "Creada base de datos a partir del excel");
-	    	pstmt.close();
-	    	conexion.close();
-			
-		} catch (Exception e) {
-			System.err.println("Error al crear la base de datos: " + e.getMessage());
-		}
+	public static String getRutaBD() {
+		return("privado/" + rutaExcel.getText());
 	}
 }
