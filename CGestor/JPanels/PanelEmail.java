@@ -15,6 +15,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 import Main.Main;
+import Main.VentanaError;
 
 public class PanelEmail extends JPanel {
 
@@ -150,6 +151,7 @@ public class PanelEmail extends JPanel {
 					cuerpoEmail.getDocument().insertString(cuerpoEmail.getCaretPosition(), aAniadir, null);
 				} catch (BadLocationException e1) {
 					System.err.println("Error al añadir la variable al correo");
+					new VentanaError("Error al formatear el correo: " + e1.getMessage());
 				}
 			}
 
@@ -181,12 +183,18 @@ public class PanelEmail extends JPanel {
 		familiasDestinatarias.add(familia);
 	}
 	
+	/**
+	 * Cambia los valores de la choice a añadir al correo
+	 */
 	public static void actualizaChoiceAniadir() {
 		choiceAniadir.removeAll();
 		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())
 			choiceAniadir.add(nuevaOpcion);
 	}
 	
+	/**
+	 * Cambia los valores de la choice de comparación
+	 */
 	public static void actualizaChoiceColumnas() {
 		opcionColumnas.removeAll();
 		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())

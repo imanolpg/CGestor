@@ -66,6 +66,7 @@ public class BD {
 		}catch (Exception e) {
 			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
 			System.err.println("Error al leer los datos de la base de datos: " + e.getMessage());
+			new VentanaError("Error al leer los datos de la base de datos: " + e.getMessage());
 		}
 	}
 	/** 

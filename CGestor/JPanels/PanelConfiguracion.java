@@ -126,6 +126,7 @@ public class PanelConfiguracion extends JPanel {
 		if (credenciales != null) {
 			email.setText(credenciales[0]);
 			clave.setText(credenciales[1]);
+			rutaBaseDeDatos.setText(credenciales[2]);
 		}
 		Main.log.log(Level.INFO, "Credenciales cargadas");
 		System.out.println("Credenciales cargadas");
@@ -141,7 +142,8 @@ public class PanelConfiguracion extends JPanel {
 		try {
 			PrintStream fs = new PrintStream(pathCredenciales);
 			fs.println(correo);
-			fs.print(clave);
+			fs.println(clave);
+			fs.print(rutaBaseDeDatos.getText());
 			Main.log.log(Level.INFO, "Credenciales guardadas");
 			fs.close();
 		} catch (Exception e) {
@@ -157,7 +159,7 @@ public class PanelConfiguracion extends JPanel {
 	 * @return array con los datos de acceso. [0]: correo; [1]:contraseña
 	 */
 	public String[] recuperarCredenciales() {
-		String[] credenciales = new String[2];
+		String[] credenciales = new String[3];
 		String lineaActual;
 
 		try {
@@ -214,6 +216,7 @@ public class PanelConfiguracion extends JPanel {
 
 		} catch (Exception e) {
 			System.err.println("Error al desencriptar: " + e.getMessage());
+			new VentanaError("Error al desencriptar: " + e.getMessage());
 		}
 		System.out.println("Desencriptado: " + textoPlano);
 		return textoPlano;
@@ -236,11 +239,16 @@ public class PanelConfiguracion extends JPanel {
 
 		} catch (Exception e) {
 			System.err.println("Error al encriptar: " + e.getMessage());
+			new VentanaError("Error al encriptar: " + e.getMessage());
 		}
 		System.out.println("Encriptado: " + textoEncriptado);
 		return textoEncriptado;
 	}
 	
+	/**
+	 * Devuelve la ruta de la base de datos
+	 * @return ruta de la base de datos
+	 */
 	public static String getRutaBD() {
 		return("jdbc:sqlite:privado/" + rutaBaseDeDatos.getText());
 	}
