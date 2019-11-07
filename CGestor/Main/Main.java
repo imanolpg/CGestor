@@ -44,6 +44,7 @@ public class Main {
 			log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {
 			System.err.println("Error al crear el handler: " + e.getMessage());
+			new VentanaError("Error al crear el handler: " + e.getMessage());
 		}
 		panelConfiguracion = new PanelConfiguracion(); //creo el panel de configuracion
 		panelGeneral = new PanelGeneral(); //creo el panel general
@@ -157,6 +158,7 @@ public class Main {
 		} catch (MessagingException e) {
 			System.err.println("Error al enviar el email: " + e.getMessage());
 			log.log(Level.WARNING, "Error al enviar mensaje a: " + destinatario);
+			new VentanaError("Error al enviar el mensaje a " + destinatario + ": " + e.getMessage());
 		}
 	}
 }

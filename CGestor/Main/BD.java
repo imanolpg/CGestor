@@ -124,6 +124,7 @@ public class BD {
 	        }catch (SQLException e) {
 	        	Main.log.log(Level.WARNING, "La base de datos no se ha podido actualizar");
 	            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
+	            new VentanaError("ERROR al actualizar la base de datos: " + e.getMessage());
 	        }
 	}
 	
@@ -147,6 +148,7 @@ public class BD {
 			conexion.close();
 		}catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			new VentanaError("Error al seleccionar los destinatarios: " + e.getMessage());
 		}
 		return(new String[]{"1","2"});
 	}
@@ -187,6 +189,7 @@ public class BD {
 			
 		} catch (Exception e) {
 			System.err.println("Error al crear la base de datos: " + e.getMessage());
+			new VentanaError("Error al crear la base de datos: " + e.getMessage());
 		}
 	}
 }

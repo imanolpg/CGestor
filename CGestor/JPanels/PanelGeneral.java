@@ -4,7 +4,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTextField;
 
 import Main.BD;
 import Main.Tabla;
@@ -19,9 +18,6 @@ public class PanelGeneral extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public static Tabla tabla;
-	private static JTextField textoABuscar;
-	//private static DefaultTableModel modelo;
-	private static Thread busqueda;
 
 	public PanelGeneral() {
 

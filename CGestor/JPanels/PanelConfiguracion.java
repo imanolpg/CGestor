@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Main.BD;
 import Main.Main;
+import Main.VentanaError;
+
 import javax.swing.JButton;
 
 public class PanelConfiguracion extends JPanel {
@@ -145,6 +147,7 @@ public class PanelConfiguracion extends JPanel {
 		} catch (Exception e) {
 			Main.log.log(Level.WARNING, "Error al cargar credenciales");
 			System.err.println("Error al escribir las credenciales al fichero: " + e.getMessage());
+			new VentanaError("Error al crear el archivo de credenciales: " + e.getMessage());
 		}
 	}
 
@@ -168,6 +171,7 @@ public class PanelConfiguracion extends JPanel {
 			br.close();
 		} catch (Exception e) {
 			System.err.println("Error al leer el archivo: " + e.getMessage());
+			new VentanaError("Error al leer el archivo de credenciales: " + e.getMessage());
 			return null;
 		}
 		return credenciales;
