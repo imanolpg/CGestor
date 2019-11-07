@@ -98,7 +98,7 @@ public class BD {
 		    	String statement = "INSERT INTO datos (";
 		    	String[] columnas  = PanelGeneral.tabla.getColumnas();
 		    	for (String columna : columnas) {
-		    		statement = statement + columna + ",";
+		    		statement = statement + "'" + columna + "'" + ",";
 		    	}
 		    	statement = statement.substring(0, statement.length()-1);
 		    	statement = statement + ") VALUES (";
@@ -106,6 +106,7 @@ public class BD {
 		    		statement = statement + "?" + ",";
 		    	statement = statement.substring(0, statement.length()-1);
 		    	statement = statement + ")";
+		    	System.out.println(statement);
 		    	//preparo el statement para guardar en la base de datos
 		    	PreparedStatement pstmt = conexion.prepareStatement(statement);
 		    	for (String[] familia : PanelGeneral.tabla.getDatos()) {

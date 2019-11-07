@@ -24,7 +24,7 @@ public class PanelError extends JPanel {
 		add(lblMensajeDeError);
 		
 		JTextPane textPane = new JTextPane();
-		textPane.setBounds(41, 58, 357, 186);
+		textPane.setBounds(41, 58, 357, 111);
 		textPane.setText(mensaje);
 		textPane.setEditable(false);
 		add(textPane);
