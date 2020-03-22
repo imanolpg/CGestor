@@ -35,13 +35,13 @@ public class Main {
 	static PanelConfiguracion panelConfiguracion;
 	static ArrayList<String[]> actualizaciones;
 	
-	static public Logger log;
+	//static public Logger log;
 	
 	public static void main(String[] args) {
-		log = Logger.getLogger("logger"); // creo el Logger
+		//log = Logger.getLogger("logger"); // creo el Logger
 		
 		try {
-			log.addHandler(new FileHandler("privado/log.xml"));
+		//	log.addHandler(new FileHandler("privado/log.xml"));
 		} catch (Exception e) {
 			System.err.println("Error al crear el handler: " + e.getMessage());
 			new VentanaError("Error al crear el handler: " + e.getMessage());
@@ -109,22 +109,15 @@ public class Main {
 	 * 
 	 * @return String[] de los correos de los destinatarios
 	 */
-	public static String[] getDestinatarios(int datoAEstudiar, String resultadoBuscado, String accion) {
-		ArrayList<String> listaDestinatarios = new ArrayList<String>();
+	public static void getDestinatarios(int datoAEstudiar, String resultadoBuscado, String accion) {
 		System.out.println("D: " + datoAEstudiar + "\tValor: " + resultadoBuscado + "\tAccion: " + accion);
 		for (String[] fila : PanelGeneral.tabla.getDatos()){
 			if (accion.equals("todos")) {
-				listaDestinatarios.add(fila[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
+				PanelEmail.aniadirDestinatario(fila);
 			} else if (fila[datoAEstudiar].equals(resultadoBuscado) && accion.equals("igual") || !fila[datoAEstudiar].equals(resultadoBuscado) && accion.equals("diferente")) {
-				listaDestinatarios.add(fila[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
-				PanelEmail.aniadirFamiliaDestinataria(fila);
+				PanelEmail.aniadirDestinatario(fila);
 			}
 		}
-		String[] aDevolver = new String[listaDestinatarios.size()];
-		for (int x=0; x<listaDestinatarios.size(); x++) {
-			aDevolver[x] = listaDestinatarios.get(x);
-		}
-		return (aDevolver);
 	}
 
 	/**
@@ -153,11 +146,11 @@ public class Main {
 			message.setSubject(asunto);
 			message.setText(email);
 			Transport.send(message);
-			log.log(Level.INFO, "Mensaje enviado a: " + destinatario);
+			//log.log(Level.INFO, "Mensaje enviado a: " + destinatario);
 			System.out.println("Email enviado a: " + destinatario);
 		} catch (MessagingException e) {
 			System.err.println("Error al enviar el email: " + e.getMessage());
-			log.log(Level.WARNING, "Error al enviar mensaje a: " + destinatario);
+			//log.log(Level.WARNING, "Error al enviar mensaje a: " + destinatario);
 			new VentanaError("Error al enviar el mensaje a " + destinatario + ": " + e.getMessage());
 		}
 	}

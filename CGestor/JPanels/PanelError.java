@@ -1,6 +1,7 @@
 package JPanels;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextPane;
@@ -24,10 +25,14 @@ public class PanelError extends JPanel {
 		add(lblMensajeDeError);
 		
 		JTextPane textPane = new JTextPane();
-		textPane.setBounds(41, 58, 357, 111);
+		textPane.setBounds(41, 58, 353, 207);
+		add(textPane);
 		textPane.setText(mensaje);
 		textPane.setEditable(false);
-		add(textPane);
+		
+		JScrollPane sc = new JScrollPane(textPane);
+		sc.setBounds(41, 58, 357, 207);
+		add(sc);
 
 	}
 }

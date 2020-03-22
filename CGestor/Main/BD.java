@@ -54,7 +54,7 @@ public class BD {
 			for (int x=0; x<datosTemporal.size(); x++)
 				datosBD[x] = datosTemporal.get(x);
 			
-	        Main.log.log(Level.INFO, "Base de datos leida correctamente");
+	        //Main.log.log(Level.INFO, "Base de datos leida correctamente");
 			//stmt.close();
 			conexion.close();
 			
@@ -64,7 +64,7 @@ public class BD {
 				PanelGeneral.tabla.creaModelo();
 			
 		}catch (Exception e) {
-			Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
+			//Main.log.log(Level.WARNING, "La base de datos no se ha podido leer");
 			System.err.println("Error al leer los datos de la base de datos: " + e.getMessage());
 			new VentanaError("Error al leer los datos de la base de datos: " + e.getMessage());
 		}
@@ -117,14 +117,14 @@ public class BD {
 		    		pstmt.executeUpdate();
 		    		//stmt.executeUpdate("UPDATE familias SET " + orden[CAMPO] + "=" + orden[VALOR] + " WHERE id='" + orden[ID] + "'");
 				}
-		    	Main.log.log(Level.INFO, "Base de datos actualizada");
+		    	//Main.log.log(Level.INFO, "Base de datos actualizada");
 		    	//pstmt.close();
 		    	conexion.close();
 		    	
 		    	cargarTabla();
 		    	
 	        }catch (SQLException e) {
-	        	Main.log.log(Level.WARNING, "La base de datos no se ha podido actualizar");
+	        	//Main.log.log(Level.WARNING, "La base de datos no se ha podido actualizar");
 	            System.err.println("ERROR al actualizar la base de datos: " + e.getMessage());
 	            new VentanaError("ERROR al actualizar la base de datos: " + e.getMessage());
 	        }

@@ -7,13 +7,11 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintStream;
-import java.util.logging.Level;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Main.BD;
-import Main.Main;
 import Main.VentanaError;
 
 import javax.swing.JButton;
@@ -126,9 +124,9 @@ public class PanelConfiguracion extends JPanel {
 		if (credenciales != null) {
 			email.setText(credenciales[0]);
 			clave.setText(credenciales[1]);
-			rutaBaseDeDatos.setText(credenciales[2]);
+			rutaBaseDeDatos.setText("ejemplo.db");
 		}
-		Main.log.log(Level.INFO, "Credenciales cargadas");
+		//Main.log.log(Level.INFO, "Credenciales cargadas");
 		System.out.println("Credenciales cargadas");
 	}
 
@@ -144,10 +142,10 @@ public class PanelConfiguracion extends JPanel {
 			fs.println(correo);
 			fs.println(clave);
 			fs.print(rutaBaseDeDatos.getText());
-			Main.log.log(Level.INFO, "Credenciales guardadas");
+			//Main.log.log(Level.INFO, "Credenciales guardadas");
 			fs.close();
 		} catch (Exception e) {
-			Main.log.log(Level.WARNING, "Error al cargar credenciales");
+			//Main.log.log(Level.WARNING, "Error al cargar credenciales");
 			System.err.println("Error al escribir las credenciales al fichero: " + e.getMessage());
 			new VentanaError("Error al crear el archivo de credenciales: " + e.getMessage());
 		}

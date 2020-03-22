@@ -24,7 +24,7 @@ public class PanelEmail extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static JTextField asuntoEmail;
-	private static ArrayList<String[]> familiasDestinatarias = new ArrayList<String[]>();
+	private static ArrayList<String[]> listaDestinatarios = new ArrayList<String[]>();
 	private static Choice choiceAniadir;
 	private static Choice opcionColumnas;
 	
@@ -58,16 +58,6 @@ public class PanelEmail extends JPanel {
 		add(aComparar);
 
 		JEditorPane cuerpoEmail = new JEditorPane();
-		cuerpoEmail.setText("ID: <<id>>\n" + 
-				"NOMBRE: <<nombre>>\n" + 
-				"PARTICIPANTES: <<participantes>>\n" + 
-				"TALLAS: <<tallas>>\n" + 
-				"TELEFONO: <<telefono>>\n" + 
-				"EMAIL: <<email>>\n" + 
-				"PAGADO: <<pagado>>\n" + 
-				"FIELD8: <<Field8>>\n" + 
-				"FIELD9: <<Field9>>\n" + 
-				"ASDSF: <<asdsf>>");
 		JScrollPane scrollPane = new JScrollPane(cuerpoEmail, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setBounds(84, 122, 399, 336);
@@ -89,7 +79,7 @@ public class PanelEmail extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				btnEnviar.setText("Enviando mensaje..."); //no funciona
 				System.out.println("Boton \"Enviar\" pulsado");
-				for (String[] destinatario : familiasDestinatarias) {
+				for (String[] destinatario : listaDestinatarios) {
 					String asunto = reestructuraEmail(asuntoEmail.getText(), destinatario);
 					String correo = reestructuraEmail(cuerpoEmail.getText(), destinatario);
 					Main.enviarEmail(asunto, correo, destinatario[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
@@ -107,11 +97,10 @@ public class PanelEmail extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Boton \"Seleccionar\" pulsado");
 				list.removeAll();
-				familiasDestinatarias.clear();
-				String[] listaDestinatarios = Main.getDestinatarios(opcionColumnas.getSelectedIndex(), aComparar.getText(),
-						comparador.getSelectedItem());
-				for (String destinatario : listaDestinatarios) {
-					list.add(destinatario);
+				listaDestinatarios.clear();
+				Main.getDestinatarios(opcionColumnas.getSelectedIndex(), aComparar.getText(), comparador.getSelectedItem());
+				for (String[] destinatario : listaDestinatarios) {
+					list.add(destinatario[Arrays.asList(PanelGeneral.tabla.getColumnas()).indexOf("email")]);
 				}
 			}
 
@@ -174,14 +163,6 @@ public class PanelEmail extends JPanel {
 		}
 		return (correo);
 	}
-
-	/**
-	 * Añade una nueva familia para enviar el email
-	 * @param nueva familia
-	 */
-	public static void aniadirFamiliaDestinataria(String[] familia) {
-		familiasDestinatarias.add(familia);
-	}
 	
 	/**
 	 * Cambia los valores de la choice a añadir al correo
@@ -199,5 +180,14 @@ public class PanelEmail extends JPanel {
 		opcionColumnas.removeAll();
 		for (String nuevaOpcion : PanelGeneral.tabla.getColumnas())
 			opcionColumnas.add(nuevaOpcion);
+	}
+	
+	/**
+	 * 
+	 * @param nuevoDestinatario
+	 */
+	public static void aniadirDestinatario(String[] nuevoDestinatario) {
+		listaDestinatarios.add(nuevoDestinatario);
+		System.out.println("NUEVO DESTINATARIO AÑADIDIO");
 	}
 }
